@@ -52,7 +52,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/card_title"
+        android:id="@+id/cardTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/cardSearch"
@@ -67,7 +67,7 @@
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/text_city"
+                android:id="@+id/textCity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -79,8 +79,8 @@
                 android:id="@+id/text_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/text_city"
-                app:layout_constraintLeft_toLeftOf="@id/text_city"
+                app:layout_constraintTop_toBottomOf="@id/textCity"
+                app:layout_constraintLeft_toLeftOf="@id/textCity"
                 android:textSize="17dp"
                 tools:text="Monday, 7.2.2022." />
 
@@ -91,8 +91,8 @@
         android:id="@+id/cardDegree"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/card_title"
-        app:layout_constraintLeft_toLeftOf="@id/card_title"
+        app:layout_constraintTop_toBottomOf="@id/cardTitle"
+        app:layout_constraintLeft_toLeftOf="@id/cardTitle"
         android:layout_margin="15dp"
         app:cardBackgroundColor="@color/card_background"
         app:cardCornerRadius="20dp">
@@ -158,7 +158,7 @@
             android:padding="12dp">
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/centerGuideline"
+                android:id="@+id/centerGuidelineMinMax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -170,7 +170,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@id/centerGuideline"
+                app:layout_constraintRight_toLeftOf="@id/centerGuidelineMinMax"
                 app:layout_constraintTop_toTopOf="parent"
                 android:textSize="18dp"
                 android:padding="4dp"
@@ -183,7 +183,7 @@
                 android:textAlignment="center"
                 app:layout_constraintTop_toBottomOf="@id/textMin"
                 app:layout_constraintLeft_toLeftOf="@id/textMin"
-                app:layout_constraintRight_toLeftOf="@id/centerGuideline"
+                app:layout_constraintRight_toLeftOf="@id/centerGuidelineMinMax"
                 android:textSize="18dp"
                 android:padding="4dp"
                 tools:text="Max: 17°C" />
@@ -193,7 +193,7 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 app:layout_constraintTop_toTopOf="@id/textMin"
-                app:layout_constraintLeft_toLeftOf="@id/centerGuideline"
+                app:layout_constraintLeft_toLeftOf="@id/centerGuidelineMinMax"
                 app:layout_constraintRight_toRightOf="parent"
                 android:textSize="18dp"
                 android:padding="4dp"
@@ -203,7 +203,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                app:layout_constraintLeft_toLeftOf="@id/centerGuideline"
+                app:layout_constraintLeft_toLeftOf="@id/centerGuidelineMinMax"
                 app:layout_constraintBottom_toBottomOf="@id/textMax"
                 app:layout_constraintRight_toRightOf="parent"
                 android:textSize="18dp"
