@@ -1,4 +1,4 @@
-package com.pma.weatherapp.base.model
+package com.pma.weatherapp.base.model.weather
 
 data class Temp(
     val day: Double,

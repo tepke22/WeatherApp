@@ -1,4 +1,4 @@
-package com.pma.weatherapp.base.model
+package com.pma.weatherapp.base.model.weather
 
 data class Daily(
     val dt: Int,
