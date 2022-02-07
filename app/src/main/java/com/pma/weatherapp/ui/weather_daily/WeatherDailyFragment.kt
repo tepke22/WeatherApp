@@ -1,4 +1,4 @@
-package com.pma.weatherapp.ui.weather_current
+package com.pma.weatherapp.ui.weather_daily
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.pma.weatherapp.R
 
-class WeatherCurrentFragment : Fragment() {
+class WeatherDailyFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +18,7 @@ class WeatherCurrentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_weather_current, container, false)
+        return inflater.inflate(R.layout.fragment_weather_daily, container, false)
     }
 
 }
