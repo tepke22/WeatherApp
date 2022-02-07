@@ -12,7 +12,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_margin="15dp"
         app:cardCornerRadius="20dp"
-        app:cardBackgroundColor="#C2CACA">
+        app:cardBackgroundColor="@color/card_daily_background">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -25,6 +25,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.4"/>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/centerGuidelineDaily2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.70"/>
 
             <TextView
                 android:id="@+id/textDay"
@@ -51,10 +58,11 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="@id/textDay"
                 app:layout_constraintBottom_toBottomOf="@id/textDay"
-                android:textColor="#A14444"
+                android:textColor="@color/daily_temp_max"
                 tools:text="Max: 18°C"
                 android:textSize="16sp"
-                app:layout_constraintLeft_toRightOf="@id/centerGuidelineDaily"/>
+                app:layout_constraintLeft_toRightOf="@id/centerGuidelineDaily"
+                app:layout_constraintRight_toLeftOf="@id/centerGuidelineDaily2"/>
 
             <TextView
                 android:id="@+id/textMin"
@@ -63,7 +71,8 @@
                 app:layout_constraintTop_toBottomOf="@id/textMax"
                 app:layout_constraintLeft_toRightOf="@id/centerGuidelineDaily"
                 app:layout_constraintBottom_toBottomOf="@id/textDate"
-                android:textColor="#414D93"
+                app:layout_constraintRight_toLeftOf="@id/centerGuidelineDaily2"
+                android:textColor="@color/daily_temp_min"
                 tools:text="Min:  7°C"/>
 
             <ImageView
@@ -73,8 +82,8 @@
                 android:background="@color/black"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/textMin"
-                app:layout_constraintLeft_toRightOf="@id/textMax"
+                app:layout_constraintBottom_toBottomOf="@id/centerGuidelineDaily2"
+                app:layout_constraintLeft_toRightOf="@id/centerGuidelineDaily2"
                 android:scaleType="center"/>
 
             <TextView
@@ -87,7 +96,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 android:textAlignment="center"
                 tools:text="Thunderstorm with heavy drizzle"
-                android:paddingTop="4dp" />
+                android:layout_marginTop="4dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
