@@ -21,7 +21,7 @@ class WeatherCurrentViewModel(private val dataSource: WeatherDataSource) : ViewM
             _state.postValue(WeatherViewState.Processing)
 
             _state.postValue(
-                when (val result = dataSource.getCurrentWeather()) {
+                when (val result = dataSource.getCurrentWeather(0.0,0.0)) {
                     is Either.Success -> WeatherViewState.DataReceived(result.data)
                     is Either.Error -> WeatherViewState.ErrorReceived(result.exception.toString())
                 }

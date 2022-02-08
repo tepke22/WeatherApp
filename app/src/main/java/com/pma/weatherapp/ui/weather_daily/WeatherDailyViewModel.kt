@@ -19,7 +19,7 @@ class WeatherDailyViewModel(private val dataSource: WeatherDataSource) : ViewMod
             _state.postValue(WeatherViewState.Processing)
 
             _state.postValue(
-                when (val result = dataSource.getDailyWeather()) {
+                when (val result = dataSource.getDailyWeather(0.0,0.0)) {
                     is Either.Success -> WeatherViewState.DataReceived(result.data)
                     is Either.Error -> WeatherViewState.ErrorReceived(result.exception.toString())
                 }
