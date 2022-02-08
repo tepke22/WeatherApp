@@ -1,9 +1,7 @@
 package com.pma.weatherapp.ui.weather_current
 
-import android.content.Context
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,8 +15,8 @@ import com.pma.weatherapp.base.data.ApiServiceProvider
 import com.pma.weatherapp.base.data.weather_api.WeatherDataSource
 import com.pma.weatherapp.base.functional.ViewModelFactoryUtil
 import com.pma.weatherapp.base.functional.WeatherViewState
+import com.pma.weatherapp.base.model.weather.Alert
 import com.pma.weatherapp.base.model.weather.Current
-import com.pma.weatherapp.base.model.weather.WeatherInfo
 import kotlinx.android.synthetic.main.fragment_weather_current.*
 import java.util.*
 import kotlin.math.round
@@ -51,7 +49,7 @@ class WeatherCurrentFragment : Fragment() {
            // breweryDetailsProgressBar.isVisible = state is BreweryDetailsViewState.Processing
 
             when (state) {
-                is WeatherViewState.DataReceived -> setUpView(state.weatherInfo.current)
+                is WeatherViewState.DataReceived -> setUpView(state.weatherInfo.current, state.weatherInfo.alerts)
                 is WeatherViewState.ErrorReceived -> showError(state.message)
             }
         })
@@ -61,7 +59,7 @@ class WeatherCurrentFragment : Fragment() {
     private fun showError(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
-    private  fun setUpView(current : Current?){
+    private  fun setUpView(current: Current?, alert: List<Alert>?, ){
 
         textCity.text = "Čačak, RS"
         textDegree.text = current?.temp?.let { round(it).toString() } + "°C"
@@ -72,7 +70,7 @@ class WeatherCurrentFragment : Fragment() {
         humidity.text = "Humidity: " + current?.humidity.toString() + "%"
         wind.text = "Wind: " + current?.wind_speed.toString() + "m/s"
         air_pollution.text = "Zagadjenost vazduha"
-        alerts.text = "Upozorenje na vremenske nepogode u drzavi"
+        alerts.text = alert?.get(0)?.description ?: "Trenutno nema alarma."
 
     }
 
