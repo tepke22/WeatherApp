@@ -88,5 +88,7 @@ data class LocalNames(
     val ko: String?,
     val io: String?,
     val cv: String?,
-    val hy: String?
+    val hy: String?,
+    val feature_name: String?,
+    val ascii: String?
 )

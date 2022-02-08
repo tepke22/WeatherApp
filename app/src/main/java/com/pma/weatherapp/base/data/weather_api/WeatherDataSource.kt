@@ -9,20 +9,32 @@ class WeatherDataSource(private val apiService: WeatherApiService) {
 
     companion object {
         private const val appid = "abbe04091b4ea9d5b1ca929c5cfc9258"
-        private const val lat = 43.900059
-        private const val lon = 20.391127
+        private const val slat = 43.900059
+        private const val slon = 20.391127
     }
 
-    suspend fun getCurrentWeather(): Either<WeatherInfo> {
-        return handleCall(apiService.getCurrentWeather(lat, lon, appid))
+    suspend fun getCurrentWeather(
+        lat: Double,
+        lon: Double,
+        units: String = "metric"
+    ): Either<WeatherInfo> {
+        return handleCall(apiService.getCurrentWeather(slat, slon, appid, units))
     }
 
-    suspend fun getDailyWeather(): Either<WeatherInfo> {
-        return handleCall(apiService.getDailyWeather(lat, lon, appid))
+    suspend fun getDailyWeather(
+        lat: Double,
+        lon: Double,
+        units: String = "metric"
+    ): Either<WeatherInfo> {
+        return handleCall(apiService.getDailyWeather(slat, slon, appid, units))
     }
 
-    suspend fun getHourlyWeather(): Either<WeatherInfo> {
-        return handleCall(apiService.getHourlyWeather(lat, lon, appid))
+    suspend fun getHourlyWeather(
+        lat: Double,
+        lon: Double,
+        units: String = "metric"
+    ): Either<WeatherInfo> {
+        return handleCall(apiService.getHourlyWeather(slat, slon, appid, units))
     }
 
     suspend fun <T> handleCall(call: Call<T>): Either<T> {
