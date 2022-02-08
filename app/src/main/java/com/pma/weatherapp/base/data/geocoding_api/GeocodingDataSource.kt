@@ -22,8 +22,6 @@ class GeocodingDataSource(private val apiService: GeocodingApiService) {
     ): Either<Geocoding> {
         return handleCall(apiService.getCityNameByCoordinates(lat, lon, appid, limit))
     }
-
-
     suspend fun <T> handleCall(call: Call<T>): Either<T> {
         val response = call.awaitResponse()
 
