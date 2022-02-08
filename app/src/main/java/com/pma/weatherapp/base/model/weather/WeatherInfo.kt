@@ -8,5 +8,6 @@ data class WeatherInfo(
     val current: Current?,
     val minutely: List<Minutely>?,
     val hourly: List<Hourly>?,
-    val daily: List<Daily>?
+    val daily: List<Daily>?,
+    val alerts: List<Alert>?
 )
