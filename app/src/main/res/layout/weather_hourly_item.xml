@@ -20,60 +20,68 @@
             android:padding="10dp">
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/centerGuidelineDaily"
+                android:id="@+id/centerGuidelineHourly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.4" />
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/centerGuidelineDaily2"
+                android:id="@+id/centerGuidelineHourly2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.70" />
+                app:layout_constraintGuide_percent="0.65" />
 
             <TextView
-                android:id="@+id/textDay"
+                android:id="@+id/textHour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
                 android:paddingBottom="1dp"
-                android:textSize="23sp"
+                android:textSize="30sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/textDescription"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Wednesday" />
+                tools:text="23:00" />
+
+            <ImageView
+                android:id="@+id/iconHumidity"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:background="@drawable/ic_humidity"
+                app:layout_constraintLeft_toRightOf="@id/centerGuidelineHourly"
+                app:layout_constraintTop_toTopOf="@id/ImageIconSun" />
 
             <TextView
-                android:id="@+id/textDate"
+                android:id="@+id/textHumidity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintLeft_toLeftOf="@id/textDay"
-                app:layout_constraintTop_toBottomOf="@id/textDay"
-                tools:text="07.02.2022" />
+                android:layout_marginLeft="5dp"
+                app:layout_constraintBottom_toBottomOf="@id/iconHumidity"
+                app:layout_constraintLeft_toRightOf="@id/iconHumidity"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="92%" />
+
+            <ImageView
+                android:id="@+id/iconWind"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/ic_wind"
+                app:layout_constraintBottom_toBottomOf="@id/ImageIconSun"
+                app:layout_constraintLeft_toRightOf="@id/centerGuidelineHourly"
+                app:layout_constraintTop_toBottomOf="@id/iconHumidity" />
 
             <TextView
-                android:id="@+id/textMax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/daily_temp_max"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@id/textDay"
-                app:layout_constraintLeft_toRightOf="@id/centerGuidelineDaily"
-                app:layout_constraintRight_toLeftOf="@id/centerGuidelineDaily2"
-                app:layout_constraintTop_toTopOf="@id/textDay"
-                tools:text="Max: 18°C" />
-
-            <TextView
-                android:id="@+id/textMin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/daily_temp_min"
-                app:layout_constraintBottom_toBottomOf="@id/textDate"
-                app:layout_constraintLeft_toRightOf="@id/centerGuidelineDaily"
-                app:layout_constraintRight_toLeftOf="@id/centerGuidelineDaily2"
-                app:layout_constraintTop_toBottomOf="@id/textMax"
-                tools:text="Min:  7°C" />
+                android:layout_marginLeft="5dp"
+                app:layout_constraintBottom_toBottomOf="@id/iconWind"
+                app:layout_constraintLeft_toRightOf="@id/iconWind"
+                app:layout_constraintTop_toTopOf="@id/iconWind"
+                tools:text="2 m/s" />
 
             <ImageView
                 android:id="@+id/ImageIconSun"
@@ -81,22 +89,37 @@
                 android:layout_height="60dp"
                 android:background="@color/black"
                 android:scaleType="center"
-                app:layout_constraintBottom_toBottomOf="@id/centerGuidelineDaily2"
-                app:layout_constraintLeft_toRightOf="@id/centerGuidelineDaily2"
+                app:layout_constraintBottom_toBottomOf="@id/centerGuidelineHourly2"
+                app:layout_constraintLeft_toRightOf="@id/centerGuidelineHourly2"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textCaption"
+                android:id="@+id/textDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:textAlignment="center"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/textTemperature"
+                app:layout_constraintTop_toTopOf="@id/textTemperature"
+                tools:text="Heavy shower snow" />
+
+            <TextView
+                android:id="@+id/textTemperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textAlignment="center"
+                android:textSize="23sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/centerGuidelineHourly2"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ImageIconSun"
-                tools:text="Thunderstorm with heavy drizzle" />
+                tools:text="18°C" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
