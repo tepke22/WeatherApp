@@ -11,12 +11,16 @@ class GeocodingDataSource(private val apiService: GeocodingApiService) {
         private const val appid = "abbe04091b4ea9d5b1ca929c5cfc9258"
     }
 
-    suspend fun getCoordinatesByCityName(cityName: String): Either<Geocoding> {
-        return handleCall(apiService.getCoordinatesByCityName(cityName, appid))
+    suspend fun getCoordinatesByCityName(cityName: String, limit: Int = 5): Either<Geocoding> {
+        return handleCall(apiService.getCoordinatesByCityName(cityName, appid, limit))
     }
 
-    suspend fun getCityNameByCordinates(lat: Double, lon: Double): Either<Geocoding> {
-        return handleCall(apiService.getCityNameByCoordinates(lat, lon, appid))
+    suspend fun getCityNameByCordinates(
+        lat: Double,
+        lon: Double,
+        limit: Int = 5
+    ): Either<Geocoding> {
+        return handleCall(apiService.getCityNameByCoordinates(lat, lon, appid, limit))
     }
 
 
