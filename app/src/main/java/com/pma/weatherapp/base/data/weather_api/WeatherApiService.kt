@@ -7,24 +7,27 @@ import retrofit2.http.Query
 
 interface WeatherApiService {
 
-    @GET("onecall?exclude=minutely,hourly,daily&units=metric")
+    @GET("onecall?exclude=minutely,hourly,daily")
     fun getCurrentWeather(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
-        @Query("appid") appid: String
+        @Query("appid") appid: String,
+        @Query("units") units: String
     ): Call<WeatherInfo>
 
-    @GET("onecall?exclude=minutely,hourly,current&units=metric")
+    @GET("onecall?exclude=minutely,hourly,current")
     fun getDailyWeather(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
-        @Query("appid") appid: String
+        @Query("appid") appid: String,
+        @Query("units") units: String
     ): Call<WeatherInfo>
 
-    @GET("onecall?exclude=minutely,daily,current&units=metric")
+    @GET("onecall?exclude=minutely,daily,current")
     fun getHourlyWeather(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
-        @Query("appid") appid: String
+        @Query("appid") appid: String,
+        @Query("units") units: String
     ): Call<WeatherInfo>
 }
