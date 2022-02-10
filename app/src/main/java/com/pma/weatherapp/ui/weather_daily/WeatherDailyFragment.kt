@@ -63,5 +63,4 @@ class WeatherDailyFragment : Fragment() {
             dailyLayout.addView(view)
         }
     }
-
 }

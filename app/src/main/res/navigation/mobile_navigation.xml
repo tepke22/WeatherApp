@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.pma.weatherapp.ui.notifications.NotificationsFragment"
+        android:name="com.pma.weatherapp.ui.weather_hourly.WeatherHourlyFragment"
         android:label="@string/title_hourly"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_weather_hourly" />
 </navigation>
