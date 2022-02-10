@@ -62,8 +62,8 @@ class WeatherCurrentFragment : Fragment() {
     private  fun setUpView(current: Current?, alert: List<Alert>?, ){
 
         textCity.text = "Čačak, RS"
-        textDegree.text = current?.temp?.let { round(it).toString() } + "°C"
-        textReelFeel.text = "Reel feel: " + current?.feels_like?.let { round(it).toString() } + "°C"
+        textDegree.text = current?.temp?.let { round(it).toString() } + " °C"
+        textReelFeel.text = "Reel feel: " + current?.feels_like?.let { round(it).toString() } + " °C"
         Glide.with(this).load("https://openweathermap.org/img/wn/"+ (current?.weather?.get(0)?.icon
             ?: "01d") +"@2x.png").into(weatherImage)
         textDate.text = getDateTime(current?.dt)
@@ -77,7 +77,7 @@ class WeatherCurrentFragment : Fragment() {
 
     private fun getDateTime(dt: Int?): String? {
         try {
-            val sdf = SimpleDateFormat("dd.MM.yyyy")
+            val sdf = SimpleDateFormat("dd.MM.yyyy.")
             val netDate = Date(dt?.toLong()?.times(1000) ?: -1)
             return sdf.format(netDate)
         } catch (e: Exception) {

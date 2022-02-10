@@ -76,10 +76,9 @@
                 tools:text="Min:  7°C" />
 
             <ImageView
-                android:id="@+id/ImageIconSun"
+                android:id="@+id/weatherImage"
                 android:layout_width="80dp"
                 android:layout_height="60dp"
-                android:background="@color/black"
                 android:scaleType="center"
                 app:layout_constraintBottom_toBottomOf="@id/centerGuidelineDaily2"
                 app:layout_constraintLeft_toRightOf="@id/centerGuidelineDaily2"
@@ -87,7 +86,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textCaption"
+                android:id="@+id/weatherDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -95,7 +94,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ImageIconSun"
+                app:layout_constraintTop_toBottomOf="@id/weatherImage"
                 tools:text="Thunderstorm with heavy drizzle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

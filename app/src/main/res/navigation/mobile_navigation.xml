@@ -9,17 +9,17 @@
         android:id="@+id/navigation_home"
         android:name="com.pma.weatherapp.ui.weather_current.WeatherCurrentFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_weather_current" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.pma.weatherapp.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:name="com.pma.weatherapp.ui.weather_daily.WeatherDailyFragment"
+        android:label="@string/title_daily"
+        tools:layout="@layout/fragment_weather_daily" />
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.pma.weatherapp.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:label="@string/title_hourly"
         tools:layout="@layout/fragment_notifications" />
 </navigation>

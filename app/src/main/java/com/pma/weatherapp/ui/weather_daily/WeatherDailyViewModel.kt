@@ -1,4 +1,4 @@
-package com.pma.weatherapp.ui.weather_current
+package com.pma.weatherapp.ui.weather_daily
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,23 +9,22 @@ import com.pma.weatherapp.base.functional.Either
 import com.pma.weatherapp.base.functional.WeatherViewState
 import kotlinx.coroutines.launch
 
-class WeatherCurrentViewModel(private val dataSource: WeatherDataSource) : ViewModel() {
-
+class WeatherDailyViewModel(private val dataSource: WeatherDataSource) : ViewModel(){
     private val _state = MutableLiveData<WeatherViewState>()
     val state: LiveData<WeatherViewState>
         get() = _state
 
-    fun getCurrentWeather() {
+    fun getDailyWeather(){
         viewModelScope.launch {
-
             _state.postValue(WeatherViewState.Processing)
 
             _state.postValue(
-                when (val result = dataSource.getCurrentWeather(0.0,0.0)) {
+                when (val result = dataSource.getDailyWeather(0.0,0.0)) {
                     is Either.Success -> WeatherViewState.DataReceived(result.data)
                     is Either.Error -> WeatherViewState.ErrorReceived(result.exception.toString())
                 }
             )
+
         }
     }
 }
