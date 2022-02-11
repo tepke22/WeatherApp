@@ -14,7 +14,7 @@ data class Hourly(
     val wind_deg: Int,
     val wind_gust: Double,
     val weather: List<Weather>?,
-    val pop: Int,
+    val pop: Double?,
     val rain: Rain?,
     val snow: Snow?
 )

@@ -2,11 +2,11 @@ package com.pma.weatherapp.ui.weather_hourly
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.appcrafters.brewery.base.functional.CoroutineContextProvider
 import com.pma.weatherapp.R
@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.fragment_weather_hourly.*
 class WeatherHourlyFragment : Fragment() {
 
     lateinit var viewModel: WeatherHourlyViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, ViewModelFactoryUtil.viewModelFactory {
@@ -30,6 +31,8 @@ class WeatherHourlyFragment : Fragment() {
                 CoroutineContextProvider()
             )
         }).get(WeatherHourlyViewModel::class.java)
+
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -45,8 +48,9 @@ class WeatherHourlyFragment : Fragment() {
         viewModel.getHourlyWeather()
     }
 
-    private fun bindFormViewModel(){
-        viewModel.state.observe(viewLifecycleOwner){state ->
+    private fun bindFormViewModel() {
+
+        viewModel.state.observe(viewLifecycleOwner) { state ->
 
             //weatherHouryProgressBar.isVisible = state is WeatherViewState.Processing
             when (state) {
@@ -63,11 +67,11 @@ class WeatherHourlyFragment : Fragment() {
     }
 
 
-    private fun setUpRecyclerView(hours: List<Hourly>){
-
-        weatherHourlyRV.adapter = WeatherHourlyRVAdapter(hours)
+    private fun setUpRecyclerView(hours: List<Hourly>) {
         Log.d("WeatherHourlyFragment", "$hours")
-        }
+        weatherHourlyRV.adapter = WeatherHourlyRVAdapter(hours)
+
+    }
 
 
 

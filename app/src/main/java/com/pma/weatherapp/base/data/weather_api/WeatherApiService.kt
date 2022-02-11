@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface WeatherApiService {
 
-    @GET("onecall?exclude=minutely,hourly,daily")
+    @GET("onecall?exclude=minutely,hourly")
     fun getCurrentWeather(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,

@@ -7,9 +7,8 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:layout_margin="15dp"
-        app:cardBackgroundColor="@color/card_daily_background"
         app:cardCornerRadius="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -17,7 +16,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:background="@drawable/weather_daily_card_style">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/centerGuidelineDaily"
@@ -37,8 +37,9 @@
                 android:id="@+id/textDay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="1dp"
-                android:textSize="23sp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="6dp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -57,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/daily_temp_max"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@id/textDay"
                 app:layout_constraintLeft_toRightOf="@id/centerGuidelineDaily"
                 app:layout_constraintRight_toLeftOf="@id/centerGuidelineDaily2"
@@ -69,6 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/daily_temp_min"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/textDate"
                 app:layout_constraintLeft_toRightOf="@id/centerGuidelineDaily"
                 app:layout_constraintRight_toLeftOf="@id/centerGuidelineDaily2"

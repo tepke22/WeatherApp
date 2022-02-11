@@ -21,7 +21,7 @@ class WeatherHourlyViewModel(
 
     fun getHourlyWeather(){
         viewModelScope.launch(courutineContextProvider.io) {
-            _state.postValue(WeatherViewState.Processing)
+            //_state.postValue(WeatherViewState.Processing)
 
             _state.postValue(
                 when (val result = dataSource.getHourlyWeather(0.0,0.0)) {

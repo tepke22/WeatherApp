@@ -7,7 +7,7 @@ import com.pma.weatherapp.R
 import com.pma.weatherapp.base.model.weather.Hourly
 
 class WeatherHourlyRVAdapter(
-    private val hours : List<Hourly>,
+    private val hours: List<Hourly>
 
 ): RecyclerView.Adapter<WeatherHourlyRVViewHolder>() {
 
