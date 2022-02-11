@@ -9,8 +9,8 @@ class WeatherDataSource(private val apiService: WeatherApiService) {
 
     companion object {
         private const val appid = "abbe04091b4ea9d5b1ca929c5cfc9258"
-        private const val slat = 55.757512
-        private const val slon = 37.564483
+//        private const val slat = 55.757512
+//        private const val slon = 37.564483
     }
 
     suspend fun getCurrentWeather(
@@ -37,7 +37,7 @@ class WeatherDataSource(private val apiService: WeatherApiService) {
         return handleCall(apiService.getHourlyWeather(lat, lon, appid, units))
     }
 
-    suspend fun <T> handleCall(call: Call<T>): Either<T> {
+    private suspend fun <T> handleCall(call: Call<T>): Either<T> {
         val response = call.awaitResponse()
 
         return if (response.isSuccessful) {

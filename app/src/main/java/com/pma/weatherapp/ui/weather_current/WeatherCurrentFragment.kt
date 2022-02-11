@@ -10,14 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.pma.weatherapp.R
 import com.pma.weatherapp.base.data.ApiServiceProvider
 import com.pma.weatherapp.base.data.airpollution_api.AirPollutionDataSource
-import com.pma.weatherapp.base.data.weather_api.GeocodingDataSource
+import com.pma.weatherapp.base.data.geocoding_api.GeocodingDataSource
 import com.pma.weatherapp.base.data.weather_api.WeatherDataSource
 import com.pma.weatherapp.base.functional.Either
 import com.pma.weatherapp.base.functional.ViewModelFactoryUtil
@@ -43,7 +42,7 @@ class WeatherCurrentFragment : Fragment() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, ViewModelFactoryUtil.viewModelFactory {
             WeatherCurrentViewModel(WeatherDataSource(ApiServiceProvider.weatherApiService))
-        }).get(WeatherCurrentViewModel::class.java)
+        })[WeatherCurrentViewModel::class.java]
 
         sharedPreferences = this.requireActivity().getPreferences(MODE_PRIVATE)
     }
@@ -59,7 +58,7 @@ class WeatherCurrentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.state.observe(viewLifecycleOwner, Observer { state ->
+        viewModel.state.observe(viewLifecycleOwner) { state ->
 
             // breweryDetailsProgressBar.isVisible = state is BreweryDetailsViewState.Processing
 
@@ -68,7 +67,7 @@ class WeatherCurrentFragment : Fragment() {
                     ?.let { setUpView(state.weatherInfo.current, state.weatherInfo.alerts, it) }
                 is WeatherViewState.ErrorReceived -> showError(state.message)
             }
-        })
+        }
 
         currentCoords = Coord(
             sharedPreferences.getFloat("lat", 43.899998F).toDouble(),
@@ -88,8 +87,8 @@ class WeatherCurrentFragment : Fragment() {
         Log.d("TAGGG LAT", currentCoords.lat.toString())
         Log.d("TAGGG LON", currentCoords.lon.toString())
 
-        val geocodingApi: GeocodingDataSource =
-            GeocodingDataSource(ApiServiceProvider.geocodingApiService);
+        val geocodingApi =
+            GeocodingDataSource(ApiServiceProvider.geocodingApiService)
         lifecycleScope.launch {
             var geocoding: Geocoding? = null
             when (val result =
@@ -102,22 +101,21 @@ class WeatherCurrentFragment : Fragment() {
             }
         }
 
-        textDegree.text = current?.temp?.let { round(it).toString() } + " °C"
-        textReelFeel.text =
-            "Reel feel: " + current?.feels_like?.let { round(it).toString() } + " °C"
+        textDegree.text = getString(R.string.curr_temp, current?.temp?.let { round(it) })
+        textReelFeel.text = getString(R.string.real_feel, current?.feels_like?.let { round(it) })
         Glide.with(this).load(
             "https://openweathermap.org/img/wn/" + (current?.weather?.get(0)?.icon
                 ?: "01d") + "@2x.png"
         ).into(weatherImage)
         textDate.text = getDateTime(current?.dt)
-        textMax.text = "Max: " + round(today.temp.max).toString() + " °C"
-        textMin.text = "Min: " + round(today.temp.min).toString() + " °C"
-        humidity.text = "Humidity: " + current?.humidity.toString() + "%"
-        wind.text = "Wind: " + current?.wind_speed.toString() + "m/s"
-        weatherDescription.text = current?.weather?.get(0)?.description?.capitalize()
+        textMax.text = getString(R.string.max_temp, round(today.temp.max))
+        textMin.text = getString(R.string.min_temp, round(today.temp.min))
+        humidity.text = getString(R.string.humidity_value, current?.humidity)
+        wind.text = getString(R.string.wind_value, current?.wind_speed)
+        weatherDescription.text = current?.weather?.get(0)?.description?.capitalize(Locale.ROOT)
 
-        val airPollutionApi: AirPollutionDataSource =
-            AirPollutionDataSource(ApiServiceProvider.airPollutionApiService);
+        val airPollutionApi =
+            AirPollutionDataSource(ApiServiceProvider.airPollutionApiService)
         lifecycleScope.launch {
             var airPollution: AirPollution? = null
             when (val result = airPollutionApi.getCurrentAirPollution(0.0, 0.0)) {
@@ -132,12 +130,12 @@ class WeatherCurrentFragment : Fragment() {
     }
 
     private fun getDateTime(dt: Int?): String? {
-        try {
-            val sdf = SimpleDateFormat("dd.MM.yyyy.")
+        return try {
+            val sdf = SimpleDateFormat("dd.MM.yyyy.", Locale.ENGLISH)
             val netDate = Date(dt?.toLong()?.times(1000) ?: -1)
-            return sdf.format(netDate)
+            sdf.format(netDate)
         } catch (e: Exception) {
-            return e.toString()
+            e.toString()
         }
     }
 
