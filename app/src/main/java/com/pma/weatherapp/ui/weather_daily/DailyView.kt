@@ -7,7 +7,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.pma.weatherapp.R
 import com.pma.weatherapp.base.model.weather.Daily
-import kotlinx.android.synthetic.main.fragment_weather_current.*
 import kotlinx.android.synthetic.main.weather_daily_item.view.*
 import java.lang.Math.round
 import java.util.*
@@ -20,10 +19,12 @@ class DailyView(contex: Context) : ConstraintLayout(contex){
         view.textDay.text = getDayName(daily.dt)
         view.textDate.text = getDateTime(daily.dt)
         view.weatherDescription.text = daily.weather.get(0).description.capitalize()
-        view.textMax.text = round(daily.temp.max).toString() + " °C"
-        view.textMin.text = round(daily.temp.min).toString() + " °C"
-        Glide.with(this).load("https://openweathermap.org/img/wn/"+ (daily?.weather?.get(0)?.icon
-            ?: "01d") +"@2x.png").into(weatherImage)
+        view.textMax.text = "Max: " + round(daily.temp.max).toString() + " °C"
+        view.textMin.text = "Min: " + round(daily.temp.min).toString() + " °C"
+        Glide.with(this).load(
+            "https://openweathermap.org/img/wn/" + (daily?.weather?.get(0)?.icon
+                ?: "01d") + "@2x.png"
+        ).into(weatherImage)
 
     }
     private fun getDayName(dt: Int?): String? {
