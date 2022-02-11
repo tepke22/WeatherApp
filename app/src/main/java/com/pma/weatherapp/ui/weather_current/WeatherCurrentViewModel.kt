@@ -15,13 +15,13 @@ class WeatherCurrentViewModel(private val dataSource: WeatherDataSource) : ViewM
     val state: LiveData<WeatherViewState>
         get() = _state
 
-    fun getCurrentWeather() {
+    fun getCurrentWeather(lat: Double, lon: Double) {
         viewModelScope.launch {
 
             _state.postValue(WeatherViewState.Processing)
 
             _state.postValue(
-                when (val result = dataSource.getCurrentWeather(0.0,0.0)) {
+                when (val result = dataSource.getCurrentWeather(lat, lon)) {
                     is Either.Success -> WeatherViewState.DataReceived(result.data)
                     is Either.Error -> WeatherViewState.ErrorReceived(result.exception.toString())
                 }

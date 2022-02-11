@@ -1,35 +1,35 @@
 package com.pma.weatherapp.ui.weather_daily
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.pma.weatherapp.R
 import com.pma.weatherapp.base.data.ApiServiceProvider
 import com.pma.weatherapp.base.data.weather_api.WeatherDataSource
 import com.pma.weatherapp.base.functional.ViewModelFactoryUtil
 import com.pma.weatherapp.base.functional.WeatherViewState
-import com.pma.weatherapp.base.model.weather.Alert
-import com.pma.weatherapp.base.model.weather.Current
 import com.pma.weatherapp.base.model.weather.Daily
-import com.pma.weatherapp.ui.weather_current.WeatherCurrentViewModel
-import kotlinx.android.synthetic.main.fragment_weather_current.*
 import kotlinx.android.synthetic.main.fragment_weather_daily.*
-import kotlin.math.round
 
 class WeatherDailyFragment : Fragment() {
+
     private lateinit var viewModel: WeatherDailyViewModel
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, ViewModelFactoryUtil.viewModelFactory {
             WeatherDailyViewModel(WeatherDataSource(ApiServiceProvider.weatherApiService))
         }).get(WeatherDailyViewModel::class.java)
+
+        sharedPreferences = this.requireActivity().getPreferences(Context.MODE_PRIVATE)
     }
 
     override fun onCreateView(
@@ -51,7 +51,10 @@ class WeatherDailyFragment : Fragment() {
                 is WeatherViewState.ErrorReceived -> showError(state.message)
             }
         })
-        viewModel.getDailyWeather()
+        viewModel.getDailyWeather(
+            sharedPreferences.getFloat("lat", 43.899998F).toDouble(),
+            sharedPreferences.getFloat("lon", 20.390945F).toDouble()
+        )
     }
     private fun showError(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()

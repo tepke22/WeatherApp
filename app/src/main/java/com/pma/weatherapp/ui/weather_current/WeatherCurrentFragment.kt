@@ -1,7 +1,10 @@
 package com.pma.weatherapp.ui.weather_current
 
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,12 +33,15 @@ import kotlin.math.round
 class WeatherCurrentFragment : Fragment() {
 
     private lateinit var viewModel: WeatherCurrentViewModel
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, ViewModelFactoryUtil.viewModelFactory {
             WeatherCurrentViewModel(WeatherDataSource(ApiServiceProvider.weatherApiService))
         }).get(WeatherCurrentViewModel::class.java)
+
+        sharedPreferences = this.requireActivity().getPreferences(MODE_PRIVATE)
     }
 
     override fun onCreateView(
@@ -49,7 +55,6 @@ class WeatherCurrentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         viewModel.state.observe(viewLifecycleOwner, Observer { state ->
 
             // breweryDetailsProgressBar.isVisible = state is BreweryDetailsViewState.Processing
@@ -60,18 +65,11 @@ class WeatherCurrentFragment : Fragment() {
                 is WeatherViewState.ErrorReceived -> showError(state.message)
             }
         })
-        viewModel.getCurrentWeather()
+        viewModel.getCurrentWeather(
+            sharedPreferences.getFloat("lat", 43.899998F).toDouble(),
+            sharedPreferences.getFloat("lon", 20.390945F).toDouble()
+        )
 
-        val airPollutionApi: AirPollutionDataSource =
-            AirPollutionDataSource(ApiServiceProvider.airPollutionApiService);
-        lifecycleScope.launch {
-            var airPollution: AirPollution? = null
-            when (val result = airPollutionApi.getCurrentAirPollution(0.0, 0.0)) {
-                is Either.Success -> airPollution = result.data
-                is Either.Error -> showError(result.exception.toString())
-            }
-            air_pollution.text = airPollution.toString()
-        }
     }
 
     private fun showError(message: String) {
@@ -79,6 +77,9 @@ class WeatherCurrentFragment : Fragment() {
     }
 
     private fun setUpView(current: Current?, alert: List<Alert>?, today: Daily) {
+
+        Log.d("TAGGG LAT", sharedPreferences.getFloat("lat", (-5.0).toFloat()).toString())
+        Log.d("TAGGG LON", sharedPreferences.getFloat("lon", (-5.0).toFloat()).toString())
 
         textCity.text = "Čačak, RS"
         textDegree.text = current?.temp?.let { round(it).toString() } + " °C"
@@ -94,10 +95,21 @@ class WeatherCurrentFragment : Fragment() {
         humidity.text = "Humidity: " + current?.humidity.toString() + "%"
         wind.text = "Wind: " + current?.wind_speed.toString() + "m/s"
         weatherDescription.text = current?.weather?.get(0)?.description?.capitalize()
-        alerts.text = alert?.get(0)?.description ?: "There are no country alert currently."
+
+        val airPollutionApi: AirPollutionDataSource =
+            AirPollutionDataSource(ApiServiceProvider.airPollutionApiService);
+        lifecycleScope.launch {
+            var airPollution: AirPollution? = null
+            when (val result = airPollutionApi.getCurrentAirPollution(0.0, 0.0)) {
+                is Either.Success -> airPollution = result.data
+                is Either.Error -> showError(result.exception.toString())
+            }
+            airPollutionValue.text = airPollution.toString()
+        }
+
+        alerts.text = alert?.get(0)?.description ?: "There are no country alerts currently."
 
     }
-
 
     private fun getDateTime(dt: Int?): String? {
         try {

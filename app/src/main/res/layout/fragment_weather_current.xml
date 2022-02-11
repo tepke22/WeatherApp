@@ -248,15 +248,29 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:id="@+id/air_pollution"
+                    android:id="@+id/airPollutionCaption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
                     android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text="@string/air_pollution_caption"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Zagadjenost vazduha" />
+                    tools:text="Air Pollution" />
+
+                <TextView
+                    android:id="@+id/airPollutionValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:layout_marginTop="4dp"
+                    app:layout_constraintLeft_toLeftOf="@id/airPollutionCaption"
+                    app:layout_constraintRight_toRightOf="@id/airPollutionCaption"
+                    app:layout_constraintTop_toBottomOf="@id/airPollutionCaption"
+                    tools:text="Air | Pollution | Value" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>

@@ -1,5 +1,7 @@
 package com.pma.weatherapp.ui.weather_hourly
 
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,6 +24,7 @@ import kotlinx.android.synthetic.main.fragment_weather_hourly.*
 class WeatherHourlyFragment : Fragment() {
 
     lateinit var viewModel: WeatherHourlyViewModel
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +35,7 @@ class WeatherHourlyFragment : Fragment() {
             )
         }).get(WeatherHourlyViewModel::class.java)
 
-
+        sharedPreferences = this.requireActivity().getPreferences(MODE_PRIVATE)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +48,10 @@ class WeatherHourlyFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         bindFormViewModel()
-        viewModel.getHourlyWeather()
+        viewModel.getHourlyWeather(
+            sharedPreferences.getFloat("lat", 43.899998F).toDouble(),
+            sharedPreferences.getFloat("lon", 20.390945F).toDouble()
+        )
     }
 
     private fun bindFormViewModel() {

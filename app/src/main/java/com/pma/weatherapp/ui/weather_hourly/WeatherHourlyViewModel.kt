@@ -19,17 +19,16 @@ class WeatherHourlyViewModel(
     val state: LiveData<WeatherViewState>
         get() = _state
 
-    fun getHourlyWeather(){
+    fun getHourlyWeather(lat: Double, lon: Double) {
         viewModelScope.launch(courutineContextProvider.io) {
             //_state.postValue(WeatherViewState.Processing)
 
             _state.postValue(
-                when (val result = dataSource.getHourlyWeather(0.0,0.0)) {
+                when (val result = dataSource.getHourlyWeather(lat, lon)) {
                     is Either.Success -> WeatherViewState.DataReceived(result.data)
                     is Either.Error -> WeatherViewState.ErrorReceived(result.exception.toString())
                 }
             )
-
         }
     }
 }

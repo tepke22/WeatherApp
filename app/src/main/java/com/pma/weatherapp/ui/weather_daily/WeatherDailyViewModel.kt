@@ -14,17 +14,16 @@ class WeatherDailyViewModel(private val dataSource: WeatherDataSource) : ViewMod
     val state: LiveData<WeatherViewState>
         get() = _state
 
-    fun getDailyWeather(){
+    fun getDailyWeather(lat: Double, lon: Double) {
         viewModelScope.launch {
             _state.postValue(WeatherViewState.Processing)
 
             _state.postValue(
-                when (val result = dataSource.getDailyWeather(0.0,0.0)) {
+                when (val result = dataSource.getDailyWeather(lat, lon)) {
                     is Either.Success -> WeatherViewState.DataReceived(result.data)
                     is Either.Error -> WeatherViewState.ErrorReceived(result.exception.toString())
                 }
             )
-
         }
     }
 }
