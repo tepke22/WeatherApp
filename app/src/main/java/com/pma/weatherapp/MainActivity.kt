@@ -1,22 +1,25 @@
 package com.pma.weatherapp
 
+import android.content.SharedPreferences
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.MenuItemCompat
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.pma.weatherapp.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.pma.weatherapp.base.functional.LocationTrack
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,5 +39,20 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         bottomNavigationView.setupWithNavController(navController)
+
+        sharedPreferences = getPreferences(MODE_PRIVATE)
+        editor = sharedPreferences.edit()
+
+        updateLocation()
+    }
+
+    private fun updateLocation() {
+        if (LocationTrack(this).canGetLocation) {
+            editor.putFloat("lat", LocationTrack(this).getLatitude().toFloat());
+            editor.putFloat("lon", LocationTrack(this).getLongitude().toFloat());
+            editor.commit();
+        }
+        Log.d("TAG LAT", sharedPreferences.getFloat("lat", (-5.0).toFloat()).toString())
+        Log.d("TAG LON", sharedPreferences.getFloat("lon", (-5.0).toFloat()).toString())
     }
 }
