@@ -200,8 +200,8 @@ class LocationTrack(private val mContext: Context) : Service(), LocationListener
 
     //Runs when location is changed
     override fun onLocationChanged(location: Location) {
-        loc!!.latitude = location.latitude
-        loc!!.longitude = location.longitude
+        loc?.latitude = location.latitude
+        loc?.longitude = location.longitude
     }
 
     override fun onStatusChanged(s: String, i: Int, bundle: Bundle) {}

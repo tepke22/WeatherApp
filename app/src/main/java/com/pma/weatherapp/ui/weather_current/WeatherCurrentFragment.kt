@@ -17,11 +17,14 @@ import com.bumptech.glide.Glide
 import com.pma.weatherapp.R
 import com.pma.weatherapp.base.data.ApiServiceProvider
 import com.pma.weatherapp.base.data.airpollution_api.AirPollutionDataSource
+import com.pma.weatherapp.base.data.weather_api.GeocodingDataSource
 import com.pma.weatherapp.base.data.weather_api.WeatherDataSource
 import com.pma.weatherapp.base.functional.Either
 import com.pma.weatherapp.base.functional.ViewModelFactoryUtil
 import com.pma.weatherapp.base.functional.WeatherViewState
 import com.pma.weatherapp.base.model.air_pollution.AirPollution
+import com.pma.weatherapp.base.model.air_pollution.Coord
+import com.pma.weatherapp.base.model.geocoding.Geocoding
 import com.pma.weatherapp.base.model.weather.Alert
 import com.pma.weatherapp.base.model.weather.Current
 import com.pma.weatherapp.base.model.weather.Daily
@@ -34,6 +37,7 @@ class WeatherCurrentFragment : Fragment() {
 
     private lateinit var viewModel: WeatherCurrentViewModel
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var currentCoords: Coord
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,10 +69,13 @@ class WeatherCurrentFragment : Fragment() {
                 is WeatherViewState.ErrorReceived -> showError(state.message)
             }
         })
-        viewModel.getCurrentWeather(
+
+        currentCoords = Coord(
             sharedPreferences.getFloat("lat", 43.899998F).toDouble(),
             sharedPreferences.getFloat("lon", 20.390945F).toDouble()
         )
+
+        viewModel.getCurrentWeather(currentCoords.lat, currentCoords.lon)
 
     }
 
@@ -78,10 +85,23 @@ class WeatherCurrentFragment : Fragment() {
 
     private fun setUpView(current: Current?, alert: List<Alert>?, today: Daily) {
 
-        Log.d("TAGGG LAT", sharedPreferences.getFloat("lat", (-5.0).toFloat()).toString())
-        Log.d("TAGGG LON", sharedPreferences.getFloat("lon", (-5.0).toFloat()).toString())
+        Log.d("TAGGG LAT", currentCoords.lat.toString())
+        Log.d("TAGGG LON", currentCoords.lon.toString())
 
-        textCity.text = "Čačak, RS"
+        val geocodingApi: GeocodingDataSource =
+            GeocodingDataSource(ApiServiceProvider.geocodingApiService);
+        lifecycleScope.launch {
+            var geocoding: Geocoding? = null
+            when (val result =
+                geocodingApi.getCityNameByCordinates(currentCoords.lat, currentCoords.lon)) {
+                is Either.Success -> geocoding = result.data
+                is Either.Error -> showError(result.exception.toString())
+            }
+            if (geocoding != null) {
+                textCity.text = geocoding.toString()
+            }
+        }
+
         textDegree.text = current?.temp?.let { round(it).toString() } + " °C"
         textReelFeel.text =
             "Reel feel: " + current?.feels_like?.let { round(it).toString() } + " °C"
