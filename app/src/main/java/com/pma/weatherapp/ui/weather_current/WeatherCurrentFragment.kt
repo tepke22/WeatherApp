@@ -4,10 +4,15 @@ import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -32,11 +37,16 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.round
 
+
 class WeatherCurrentFragment : Fragment() {
 
     private lateinit var viewModel: WeatherCurrentViewModel
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var currentCoords: Coord
+    private lateinit var editor: SharedPreferences.Editor
+
+    private var lista = listOf<String>("")
+    private val COUNTRIES = arrayOf("Belgium", "France", "Italy", "Germany", "Spain")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +55,9 @@ class WeatherCurrentFragment : Fragment() {
         })[WeatherCurrentViewModel::class.java]
 
         sharedPreferences = this.requireActivity().getPreferences(MODE_PRIVATE)
+        editor = sharedPreferences.edit()
+
+        getCurrentCords()
     }
 
     override fun onCreateView(
@@ -58,6 +71,79 @@ class WeatherCurrentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var search: AutoCompleteTextView = searchText
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            lista
+        )
+        search.setAdapter(adapter)
+
+        val geocodingApi =
+            GeocodingDataSource(ApiServiceProvider.geocodingApiService)
+
+
+        search.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            val cityName = parent.getItemAtPosition(position).toString()
+            Log.d("TAG SEARCH TEXT", cityName)
+            lifecycleScope.launch {
+                var geocoding: Geocoding? = null
+                when (val result =
+                    geocodingApi.getCoordinatesByCityName(cityName.toString())) {
+                    is Either.Success -> geocoding = result.data
+                    is Either.Error -> showError(result.exception.toString())
+                }
+                Log.d("TAG SEARCH LAT", geocoding?.get(0)?.lat.toString())
+                Log.d("TAG SEARCH LON", geocoding?.get(0)?.lon.toString())
+                if (geocoding != null) {
+                    editor.putFloat("lat", geocoding?.get(0)?.lat.toFloat())
+                    editor.putFloat("lon", geocoding?.get(0)?.lon.toFloat())
+                    editor.commit()
+                    getCurrentCords()
+                    viewModel.getCurrentWeather(currentCoords.lat, currentCoords.lon)
+                }
+            }
+        }
+
+        search.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                if (s != null && s.isEmpty()) {
+                    return
+                }
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s != null && s.isEmpty()) {
+                    return
+                }
+                val searchText = s.toString()
+                Log.d("TAG SEARCH TEXT", searchText)
+                lifecycleScope.launch {
+                    var geocoding: Geocoding? = null
+                    when (val result =
+                        geocodingApi.getCoordinatesByCityName(searchText)) {
+                        is Either.Success -> geocoding = result.data
+                        is Either.Error -> showError(result.exception.toString())
+                    }
+                    if (geocoding != null) {
+                        lista = geocoding!!.getCityList()
+                        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+                            requireContext(),
+                            android.R.layout.simple_dropdown_item_1line,
+                            lista
+                        )
+                        search.setAdapter(adapter)
+                    }
+                    Log.d("TAG CITIES", lista.toString())
+                }
+            }
+        })
+
+
         viewModel.state.observe(viewLifecycleOwner) { state ->
 
             // breweryDetailsProgressBar.isVisible = state is BreweryDetailsViewState.Processing
@@ -69,14 +155,17 @@ class WeatherCurrentFragment : Fragment() {
             }
         }
 
+        viewModel.getCurrentWeather(currentCoords.lat, currentCoords.lon)
+    }
+
+
+    private fun getCurrentCords() {
         currentCoords = Coord(
             sharedPreferences.getFloat("lat", 43.899998F).toDouble(),
             sharedPreferences.getFloat("lon", 20.390945F).toDouble()
         )
-
-        viewModel.getCurrentWeather(currentCoords.lat, currentCoords.lon)
-
     }
+
 
     private fun showError(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
@@ -124,8 +213,11 @@ class WeatherCurrentFragment : Fragment() {
             }
             airPollutionValue.text = airPollution.toString()
         }
-
-        alerts.text = alert?.get(0)?.description ?: "There are no country alerts currently."
+        if ((alert?.get(0)?.event?.trim()?.length ?: 0 == 0) && (alert?.get(0)?.description?.trim()?.length ?: 0 == 0)) {
+            alerts.text = "There are no country alerts currently."
+        } else {
+            alerts.text = ("${alert?.get(0)?.event} ${alert?.get(0)?.description}")
+        }
 
     }
 
@@ -140,3 +232,5 @@ class WeatherCurrentFragment : Fragment() {
     }
 
 }
+
+

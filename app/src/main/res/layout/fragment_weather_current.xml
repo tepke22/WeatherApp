@@ -40,17 +40,16 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                    android:id="@+id/searchText"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="20dp"
-                    android:background="@color/white"
-                    android:padding="3dp"
-                    android:textSize="24sp"
-                    app:layout_constraintBottom_toBottomOf="@id/buttonSearch"
+                    android:layout_height="wrap_content"
                     app:layout_constraintLeft_toRightOf="@id/buttonSearch"
-                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/buttonSearch"
-                    tools:text="Cacak" />
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:hint="City search"
+                    android:textSize="22sp"
+                    android:layout_marginHorizontal="10dp" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
