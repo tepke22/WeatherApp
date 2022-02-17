@@ -1,8 +1,8 @@
 package com.pma.weatherapp.ui.weather_current
 
 import androidx.lifecycle.Observer
-import com.appcrafters.brewery.base.TestCoroutineContextProvider
 import com.pma.weatherapp.base.InstantExecutorTest
+import com.pma.weatherapp.base.TestCoroutineContextProvider
 import com.pma.weatherapp.base.data.weather_api.IWeatherDataSource
 import com.pma.weatherapp.base.functional.Either
 import com.pma.weatherapp.base.functional.WeatherViewState

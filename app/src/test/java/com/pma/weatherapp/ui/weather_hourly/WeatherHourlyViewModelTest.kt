@@ -1,10 +1,10 @@
 package com.pma.weatherapp.ui.weather_hourly
 
 import androidx.lifecycle.Observer
-import com.appcrafters.brewery.base.TestCoroutineContextProvider
 import com.pma.weatherapp.base.data.weather_api.IWeatherDataSource
 import com.pma.weatherapp.base.functional.Either
 import com.pma.weatherapp.base.InstantExecutorTest
+import com.pma.weatherapp.base.TestCoroutineContextProvider
 import com.pma.weatherapp.base.functional.WeatherViewState
 import com.pma.weatherapp.base.model.weather.WeatherInfo
 import kotlinx.coroutines.runBlocking
