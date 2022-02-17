@@ -1,18 +1,16 @@
 package com.pma.weatherapp.ui.weather_current
 
+import android.app.Activity
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -33,6 +31,7 @@ import com.pma.weatherapp.base.model.weather.Alert
 import com.pma.weatherapp.base.model.weather.Current
 import com.pma.weatherapp.base.model.weather.Daily
 import kotlinx.android.synthetic.main.fragment_weather_current.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.math.round
@@ -45,8 +44,6 @@ class WeatherCurrentFragment : Fragment() {
     private lateinit var currentCoords: Coord
     private lateinit var editor: SharedPreferences.Editor
 
-    private var lista = listOf<String>("")
-    private val COUNTRIES = arrayOf("Belgium", "France", "Italy", "Germany", "Spain")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,25 +68,20 @@ class WeatherCurrentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var search: AutoCompleteTextView = searchText
-        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-            requireContext(),
-            android.R.layout.simple_dropdown_item_1line,
-            lista
-        )
-        search.setAdapter(adapter)
-
         val geocodingApi =
             GeocodingDataSource(ApiServiceProvider.geocodingApiService)
 
 
-        search.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            val cityName = parent.getItemAtPosition(position).toString()
-            Log.d("TAG SEARCH TEXT", cityName)
-            lifecycleScope.launch {
+        buttonSearch.setOnClickListener(View.OnClickListener { v ->
+            var searchTerm = searchText.text.toString()
+            searchTerm = searchTerm.trim()
+            Log.d("TAG SEARCH TEXT", searchTerm)
+            val geocodingApi =
+                GeocodingDataSource(ApiServiceProvider.geocodingApiService)
+            lifecycleScope.launch(Dispatchers.Default) {
                 var geocoding: Geocoding? = null
                 when (val result =
-                    geocodingApi.getCoordinatesByCityName(cityName.toString())) {
+                    geocodingApi.getCoordinatesByCityName(searchTerm)) {
                     is Either.Success -> geocoding = result.data
                     is Either.Error -> showError(result.exception.toString())
                 }
@@ -101,44 +93,8 @@ class WeatherCurrentFragment : Fragment() {
                     editor.commit()
                     getCurrentCords()
                     viewModel.getCurrentWeather(currentCoords.lat, currentCoords.lon)
-                }
-            }
-        }
-
-        search.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                if (s != null && s.isEmpty()) {
-                    return
-                }
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s != null && s.isEmpty()) {
-                    return
-                }
-                val searchText = s.toString()
-                Log.d("TAG SEARCH TEXT", searchText)
-                lifecycleScope.launch {
-                    var geocoding: Geocoding? = null
-                    when (val result =
-                        geocodingApi.getCoordinatesByCityName(searchText)) {
-                        is Either.Success -> geocoding = result.data
-                        is Either.Error -> showError(result.exception.toString())
-                    }
-                    if (geocoding != null) {
-                        lista = geocoding!!.getCityList()
-                        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-                            requireContext(),
-                            android.R.layout.simple_dropdown_item_1line,
-                            lista
-                        )
-                        search.setAdapter(adapter)
-                    }
-                    Log.d("TAG CITIES", lista.toString())
+                    searchText.text?.clear()
+                    hideKeyboard()
                 }
             }
         })
@@ -229,6 +185,20 @@ class WeatherCurrentFragment : Fragment() {
         } catch (e: Exception) {
             e.toString()
         }
+    }
+
+    fun Fragment.hideKeyboard() {
+        view?.let { activity?.hideKeyboard(it) }
+    }
+
+    fun Activity.hideKeyboard() {
+        hideKeyboard(currentFocus ?: View(this))
+    }
+
+    fun Context.hideKeyboard(view: View) {
+        val inputMethodManager =
+            getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }
