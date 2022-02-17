@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.appcrafters.brewery.base.functional.CoroutineContextProvider
 import com.bumptech.glide.Glide
 import com.pma.weatherapp.R
 import com.pma.weatherapp.base.data.ApiServiceProvider
@@ -38,7 +39,8 @@ class WeatherCurrentFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, ViewModelFactoryUtil.viewModelFactory {
-            WeatherCurrentViewModel(WeatherDataSource(ApiServiceProvider.weatherApiService))
+            WeatherCurrentViewModel(WeatherDataSource(ApiServiceProvider.weatherApiService),
+                CoroutineContextProvider())
         }).get(WeatherCurrentViewModel::class.java)
 
         sharedPreferences = this.requireActivity().getPreferences(MODE_PRIVATE)

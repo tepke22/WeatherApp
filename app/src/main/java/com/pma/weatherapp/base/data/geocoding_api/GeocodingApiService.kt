@@ -1,4 +1,4 @@
-package com.pma.weatherapp.base.data.weather_api
+package com.pma.weatherapp.base.data.geocoding_api
 
 import com.pma.weatherapp.base.model.geocoding.Geocoding
 import retrofit2.Call

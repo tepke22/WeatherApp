@@ -1,4 +1,4 @@
-package com.pma.weatherapp.base.data.weather_api
+package com.pma.weatherapp.base.data.geocoding_api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
