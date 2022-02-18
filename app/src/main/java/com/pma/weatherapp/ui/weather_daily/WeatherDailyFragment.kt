@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.appcrafters.brewery.base.functional.CoroutineContextProvider
 import com.pma.weatherapp.R
 import com.pma.weatherapp.base.data.ApiServiceProvider
 import com.pma.weatherapp.base.data.weather_api.WeatherDataSource
@@ -25,7 +27,8 @@ class WeatherDailyFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, ViewModelFactoryUtil.viewModelFactory {
-            WeatherDailyViewModel(WeatherDataSource(ApiServiceProvider.weatherApiService))
+            WeatherDailyViewModel(WeatherDataSource(ApiServiceProvider.weatherApiService),
+                CoroutineContextProvider())
         })[WeatherDailyViewModel::class.java]
 
         sharedPreferences = this.requireActivity().getPreferences(Context.MODE_PRIVATE)

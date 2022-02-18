@@ -1,6 +1,4 @@
-@file:Suppress("unused")
-
-package com.pma.weatherapp.base.data.geocoding_api
+package com.pma.weatherapp.base.data.weather_api
 
 import com.pma.weatherapp.base.functional.Either
 import com.pma.weatherapp.base.model.geocoding.Geocoding
@@ -24,8 +22,7 @@ class GeocodingDataSource(private val apiService: GeocodingApiService) {
     ): Either<Geocoding> {
         return handleCall(apiService.getCityNameByCoordinates(lat, lon, appid, limit))
     }
-
-    private suspend fun <T> handleCall(call: Call<T>): Either<T> {
+    suspend fun <T> handleCall(call: Call<T>): Either<T> {
         val response = call.awaitResponse()
 
         return if (response.isSuccessful) {

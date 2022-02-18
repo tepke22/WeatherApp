@@ -120,8 +120,8 @@ class WeatherCurrentFragment : Fragment() {
             sharedPreferences.getFloat("lat", 43.899998F).toDouble(),
             sharedPreferences.getFloat("lon", 20.390945F).toDouble()
         )
-    }
 
+    }
 
     private fun showError(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()

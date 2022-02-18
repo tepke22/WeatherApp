@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.pma.weatherapp.base.data.weather_api.WeatherDataSource
 import com.pma.weatherapp.base.functional.Either
 import com.pma.weatherapp.base.functional.WeatherViewState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class WeatherCurrentViewModel(private val dataSource: WeatherDataSource) : ViewModel() {
@@ -17,7 +16,7 @@ class WeatherCurrentViewModel(private val dataSource: WeatherDataSource) : ViewM
         get() = _state
 
     fun getCurrentWeather(lat: Double, lon: Double) {
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
 
             _state.postValue(WeatherViewState.Processing)
 
