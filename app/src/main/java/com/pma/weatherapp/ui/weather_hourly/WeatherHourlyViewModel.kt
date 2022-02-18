@@ -14,11 +14,13 @@ import kotlinx.coroutines.launch
 class WeatherHourlyViewModel( private val dataSource: IWeatherDataSource, private val courutineContextProvider: ICoroutineContextProvider) : ViewModel() {
 
     private val _state = MutableLiveData<WeatherViewState>()
+
     val state: LiveData<WeatherViewState>
         get() = _state
 
     fun getHourlyWeather(lat: Double, lon: Double) {
         viewModelScope.launch(courutineContextProvider.io) {
+
             _state.postValue(WeatherViewState.Processing)
 
             _state.postValue(

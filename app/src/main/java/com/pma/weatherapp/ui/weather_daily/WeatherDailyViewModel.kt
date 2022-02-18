@@ -10,7 +10,6 @@ import com.pma.weatherapp.base.functional.ICoroutineContextProvider
 import com.pma.weatherapp.base.functional.WeatherViewState
 import kotlinx.coroutines.launch
 
-
 class WeatherDailyViewModel(private val dataSource: IWeatherDataSource, private val courutineContextProvider: ICoroutineContextProvider) : ViewModel(){
 
     private val _state = MutableLiveData<WeatherViewState>()

@@ -28,8 +28,7 @@ class WeatherHourlyFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, ViewModelFactoryUtil.viewModelFactory {
-            WeatherHourlyViewModel(
-                WeatherDataSource(ApiServiceProvider.weatherApiService),
+            WeatherHourlyViewModel(WeatherDataSource(ApiServiceProvider.weatherApiService),
                 CoroutineContextProvider()
             )
         })[WeatherHourlyViewModel::class.java]
@@ -57,7 +56,6 @@ class WeatherHourlyFragment : Fragment() {
 
         viewModel.state.observe(viewLifecycleOwner) { state ->
 
-            //weatherHouryProgressBar.isVisible = state is WeatherViewState.Processing
             when (state) {
                 is WeatherViewState.DataReceived -> state.weatherInfo.hourly?.let {
                     setUpRecyclerView(it)

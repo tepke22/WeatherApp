@@ -26,8 +26,8 @@ class WeatherDailyFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this, ViewModelFactoryUtil.viewModelFactory {WeatherDailyViewModel(
-            WeatherDataSource(ApiServiceProvider.weatherApiService),
+        viewModel = ViewModelProvider(this, ViewModelFactoryUtil.viewModelFactory {
+            WeatherDailyViewModel(WeatherDataSource(ApiServiceProvider.weatherApiService),
                 CoroutineContextProvider()
             )
         })[WeatherDailyViewModel::class.java]
@@ -35,8 +35,7 @@ class WeatherDailyFragment : Fragment() {
         sharedPreferences = this.requireActivity().getPreferences(Context.MODE_PRIVATE)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
@@ -45,20 +44,25 @@ class WeatherDailyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.state.observe(viewLifecycleOwner) { state ->
 
-            // breweryDetailsProgressBar.isVisible = state is BreweryDetailsViewState.Processing
+        bindFormViewModel()
+        viewModel.getDailyWeather(
+            sharedPreferences.getFloat("lat", 43.899998F).toDouble(),
+            sharedPreferences.getFloat("lon", 20.390945F).toDouble()
+        )
+    }
+
+    private fun bindFormViewModel() {
+
+        viewModel.state.observe(viewLifecycleOwner) { state ->
 
             when (state) {
                 is WeatherViewState.DataReceived -> setUpView(state.weatherInfo.daily)
                 is WeatherViewState.ErrorReceived -> showError(state.message)
             }
         }
-        viewModel.getDailyWeather(
-            sharedPreferences.getFloat("lat", 43.899998F).toDouble(),
-            sharedPreferences.getFloat("lon", 20.390945F).toDouble()
-        )
     }
+
     private fun showError(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
