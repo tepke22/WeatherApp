@@ -44,6 +44,7 @@ class WeatherCurrentFragment : Fragment() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var currentCoords: Coord
     private lateinit var editor: SharedPreferences.Editor
+    private lateinit var courutineContextProvider: CoroutineContextProvider
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +56,7 @@ class WeatherCurrentFragment : Fragment() {
             )
         })[WeatherCurrentViewModel::class.java]
 
+        courutineContextProvider = CoroutineContextProvider()
         sharedPreferences = this.requireActivity().getPreferences(MODE_PRIVATE)
         editor = sharedPreferences.edit()
 
@@ -72,40 +74,43 @@ class WeatherCurrentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val geocodingApi =
-            GeocodingDataSource(ApiServiceProvider.geocodingApiService)
-
         buttonSearch.setOnClickListener(View.OnClickListener { v ->
             var searchTerm = searchText.text.toString()
             searchTerm = searchTerm.trim()
-            Log.d("TAG SEARCH TEXT", searchTerm)
-            val geocodingApi =
-                GeocodingDataSource(ApiServiceProvider.geocodingApiService)
-            lifecycleScope.launch(Dispatchers.Default) {
+//            Log.d("TAG SEARCH TEXT", searchTerm)
+            val geocodingApi = GeocodingDataSource(ApiServiceProvider.geocodingApiService)
+            var geocoding: Geocoding? = null
+
+            lifecycleScope.launch(courutineContextProvider.io) {
                 var geocoding: Geocoding? = null
                 when (val result =
                     geocodingApi.getCoordinatesByCityName(searchTerm, 5)) {
                     is Either.Success -> geocoding = result.data
                     is Either.Error -> showError(result.exception.toString())
                 }
-                Log.d("TAG SEARCH LAT", geocoding?.get(0)?.lat.toString())
-                Log.d("TAG SEARCH LON", geocoding?.get(0)?.lon.toString())
-                if (geocoding != null) {
+                if (!geocoding?.isEmpty()!!) {
                     editor.putFloat("lat", geocoding?.get(0)?.lat.toFloat())
                     editor.putFloat("lon", geocoding?.get(0)?.lon.toFloat())
                     editor.commit()
                     getCurrentCords()
+//                    Log.d("TAG SEARCH LAT", currentCoords.lat.toString())
+//                    Log.d("TAG SEARCH LON", currentCoords.lon.toString())
                     viewModel.getCurrentWeather(currentCoords.lat, currentCoords.lon)
                     searchText.text?.clear()
                     hideKeyboard()
                 }
+
+                if (geocoding?.isEmpty()) {
+                    lifecycleScope.launch(courutineContextProvider.main) {
+                        showError(getString(R.string.no_city_err))
+                    }
+                }
             }
+
         })
 
-
-        viewModel.state.observe(viewLifecycleOwner) { state ->
-
-            //breweryDetailsProgressBar.isVisible = state is BreweryDetailsViewState.Processing
+        viewModel.state.observe(viewLifecycleOwner)
+        { state ->
 
             when (state) {
                 is WeatherViewState.DataReceived -> state.weatherInfo.daily?.get(0)
@@ -132,8 +137,8 @@ class WeatherCurrentFragment : Fragment() {
 
     private fun setUpView(current: Current?, alert: List<Alert>?, today: Daily) {
 
-        Log.d("TAGGG LAT", currentCoords.lat.toString())
-        Log.d("TAGGG LON", currentCoords.lon.toString())
+//        Log.d("TAGGG LAT", currentCoords.lat.toString())
+//        Log.d("TAGGG LON", currentCoords.lon.toString())
 
         val geocodingApi =
             GeocodingDataSource(ApiServiceProvider.geocodingApiService)
@@ -173,10 +178,12 @@ class WeatherCurrentFragment : Fragment() {
             airPollutionValue.text = airPollution.toString()
         }
 
-        if ((alert?.get(0)?.event?.trim()?.length ?: 0 == 0) && (alert?.get(0)?.description?.trim()?.length ?: 0 == 0)) {
-            alerts.text = "There are no country alerts currently."
-        } else {
-            alerts.text = ("${alert?.get(0)?.event} ${alert?.get(0)?.description}")
+        if (alert != null) {
+            if (alert.isEmpty()) {
+                alerts.text = getString(R.string.no_alerts_err)
+            } else {
+                alerts.text = ("${alert?.get(0)?.event} ${alert?.get(0)?.description}")
+            }
         }
 
     }
@@ -191,15 +198,11 @@ class WeatherCurrentFragment : Fragment() {
         }
     }
 
-    fun Fragment.hideKeyboard() {
+    private fun Fragment.hideKeyboard() {
         view?.let { activity?.hideKeyboard(it) }
     }
 
-    fun Activity.hideKeyboard() {
-        hideKeyboard(currentFocus ?: View(this))
-    }
-
-    fun Context.hideKeyboard(view: View) {
+    private fun Context.hideKeyboard(view: View) {
         val inputMethodManager =
             getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
