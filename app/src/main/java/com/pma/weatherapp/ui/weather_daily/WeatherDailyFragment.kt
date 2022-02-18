@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.pma.weatherapp.R
@@ -67,6 +68,7 @@ class WeatherDailyFragment : Fragment() {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
     private  fun setUpView(days: List<Daily>?){
+        dailyLayout.removeAllViews()
         days?.forEach { day ->
             val view = DailyView(requireContext())
             view.bind(day)
