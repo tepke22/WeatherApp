@@ -5,7 +5,11 @@ import com.pma.weatherapp.base.model.air_pollution.AirPollution
 import retrofit2.Call
 import retrofit2.awaitResponse
 
-class AirPollutionDataSource(private val apiService: AirPollutionApiService) {
+interface IAirPollutionDataSource{
+
+    suspend fun getCurrentAirPollution(lat:Double, lon:Double): Either<AirPollution>
+}
+class AirPollutionDataSource(private val apiService: AirPollutionApiService) : IAirPollutionDataSource{
 
     companion object {
         private const val appid = "abbe04091b4ea9d5b1ca929c5cfc9258"
@@ -13,7 +17,7 @@ class AirPollutionDataSource(private val apiService: AirPollutionApiService) {
         private const val slon = 20.391127
     }
 
-    suspend fun getCurrentAirPollution(lat: Double, lon: Double): Either<AirPollution> {
+    override suspend fun getCurrentAirPollution(lat: Double, lon: Double): Either<AirPollution> {
         return handleCall(apiService.getCurrentAirPollution(slat, slon, appid))
     }
 

@@ -1,5 +1,7 @@
 package com.pma.weatherapp.base.model.weather
 
+import com.google.gson.annotations.SerializedName
+
 data class WeatherInfo(
     val lat: Double,
     val lon: Double,
@@ -10,4 +12,6 @@ data class WeatherInfo(
     val hourly: List<Hourly>?,
     val daily: List<Daily>?,
     val alerts: List<Alert>?
-)
+){
+    constructor() : this(0.0,0.0,"",0, Current(),listOf(),listOf(),listOf(),listOf())
+}

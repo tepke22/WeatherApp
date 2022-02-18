@@ -1,24 +1,30 @@
-package com.pma.weatherapp.base.data.weather_api
+package com.pma.weatherapp.base.data.geocoding_api
+
 
 import com.pma.weatherapp.base.functional.Either
 import com.pma.weatherapp.base.model.geocoding.Geocoding
 import retrofit2.Call
 import retrofit2.awaitResponse
 
-class GeocodingDataSource(private val apiService: GeocodingApiService) {
+interface IGeocodingDataSource{
+
+    suspend fun getCoordinatesByCityName(cityName:String, limit:Int): Either<Geocoding>
+    suspend fun getCityNameByCordinates(lat:Double, lon:Double, limit:Int): Either<Geocoding>
+}
+class GeocodingDataSource(private val apiService: GeocodingApiService) : IGeocodingDataSource {
 
     companion object {
         private const val appid = "abbe04091b4ea9d5b1ca929c5cfc9258"
     }
 
-    suspend fun getCoordinatesByCityName(cityName: String, limit: Int = 5): Either<Geocoding> {
+    override suspend fun getCoordinatesByCityName(cityName: String, limit: Int): Either<Geocoding> {
         return handleCall(apiService.getCoordinatesByCityName(cityName, appid, limit))
     }
 
-    suspend fun getCityNameByCordinates(
+    override suspend fun getCityNameByCordinates(
         lat: Double,
         lon: Double,
-        limit: Int = 5
+        limit: Int
     ): Either<Geocoding> {
         return handleCall(apiService.getCityNameByCoordinates(lat, lon, appid, limit))
     }

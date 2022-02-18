@@ -15,4 +15,6 @@ data class Current(
     val wind_speed: Double,
     val wind_deg: Int,
     val weather: List<Weather>?
-)
+){
+    constructor() : this(0,0,0,0.0,0.0,0,0,0.0,0.0,0,0,0.0,0, listOf())
+}
