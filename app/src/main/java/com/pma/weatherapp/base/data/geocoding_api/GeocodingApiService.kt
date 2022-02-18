@@ -14,7 +14,7 @@ interface GeocodingApiService {
         @Query("limit") limit: Int
     ): Call<Geocoding>
 
-    @GET("reverse?limit=5")
+    @GET("reverse")
     fun getCityNameByCoordinates(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,

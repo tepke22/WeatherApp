@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.pma.weatherapp.base.functional
 
 import android.Manifest
@@ -11,19 +13,17 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.os.IBinder
-import android.provider.Settings
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 
 class LocationTrack(private val mContext: Context) : Service(), LocationListener {
     private var longitude: Double = 0.0
     private var latitude: Double = 0.0
-    protected var locationManager: LocationManager? = null
-    var checkGPS = false
-    var checkNetwork = false
+    private var locationManager: LocationManager? = null
+    private var checkGPS = false
+    private var checkNetwork = false
     var canGetLocation = false
-    var loc: Location? = null
+    private var loc: Location? = null
 
     /**
      * Method use to get location
@@ -93,21 +93,16 @@ class LocationTrack(private val mContext: Context) : Service(), LocationListener
                         }
                     }
                     if (checkNetwork) {
-                        if (ActivityCompat.checkSelfPermission(
-                                mContext,
-                                Manifest.permission.ACCESS_FINE_LOCATION
-                            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                                mContext, Manifest.permission.ACCESS_COARSE_LOCATION
-                            ) != PackageManager.PERMISSION_GRANTED
-                        ) {
-                            // TODO: Consider calling
-                            //    ActivityCompat#requestPermissions
-                            // here to request the missing permissions, and then overriding
-                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                            //                                          int[] grantResults)
-                            // to handle the case where the user grants the permission. See the documentation
-                            // for ActivityCompat#requestPermissions for more details.
-                        }
+//                        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+//                            && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//
+//                            //    ActivityCompat#requestPermissions
+//                            // here to request the missing permissions, and then overriding
+//                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                            //                                          int[] grantResults)
+//                            // to handle the case where the user grants the permission. See the documentation
+//                            // for ActivityCompat#requestPermissions for more details.
+//                        }
                         locationManager!!.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
                             MIN_TIME_BW_UPDATES,
@@ -143,56 +138,56 @@ class LocationTrack(private val mContext: Context) : Service(), LocationListener
         return latitude
     }
 
-    fun canGetLocation(): Boolean {
-        return canGetLocation
-    }
+//    fun canGetLocation(): Boolean {
+//        return canGetLocation
+//    }
 
     /**
      * Use to Changing in setting
      *
-     * @param context
+     * @param_context
      */
-    fun showSettingsAlert(context: Context?) {
-        val alertDialog = AlertDialog.Builder(
-            mContext
-        )
-        alertDialog.setTitle("GPS is not Enabled!")
-        alertDialog.setMessage("Do you want to turn on GPS?")
-        alertDialog.setPositiveButton("Yes") { dialog, which ->
-            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-            mContext.startActivity(intent)
-        }
-        alertDialog.setNegativeButton("No") { dialog, which ->
-            dialog.cancel()
-            //                new AddSosDialog(context, AppPreference.getInstance(context).getUserData().getRwaid(), Double.toString(latitude), Double.toString(longitude)).show();
-        }
-        alertDialog.show()
-    }
+//    fun showSettingsAlert(context: Context?) {
+//        val alertDialog = AlertDialog.Builder(
+//            mContext
+//        )
+//        alertDialog.setTitle("GPS is not Enabled!")
+//        alertDialog.setMessage("Do you want to turn on GPS?")
+//        alertDialog.setPositiveButton("Yes") { dialog, which ->
+//            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+//            mContext.startActivity(intent)
+//        }
+//        alertDialog.setNegativeButton("No") { dialog, which ->
+//            dialog.cancel()
+//            //                new AddSosDialog(context, AppPreference.getInstance(context).getUserData().getRwaid(), Double.toString(latitude), Double.toString(longitude)).show();
+//        }
+//        alertDialog.show()
+//    }
 
     /**
      * Stop Listener if not needed
      */
-    fun stopListener() {
-        if (locationManager != null) {
-            if (ActivityCompat.checkSelfPermission(
-                    mContext,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    mContext, Manifest.permission.ACCESS_COARSE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return
-            }
-            //   locationManager.removeUpdates(com.spideymanage.helper.LocationTrack.this);
-        }
-    }
+//    fun stopListener() {
+//        if (locationManager != null) {
+//            if (ActivityCompat.checkSelfPermission(
+//                    mContext,
+//                    Manifest.permission.ACCESS_FINE_LOCATION
+//                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+//                    mContext, Manifest.permission.ACCESS_COARSE_LOCATION
+//                ) != PackageManager.PERMISSION_GRANTED
+//            ) {
+//
+//                //    ActivityCompat#requestPermissions
+//                // here to request the missing permissions, and then overriding
+//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                //                                          int[] grantResults)
+//                // to handle the case where the user grants the permission. See the documentation
+//                // for ActivityCompat#requestPermissions for more details.
+//                return
+//            }
+//            //   locationManager.removeUpdates(com.spideymanage.helper.LocationTrack.this);
+//        }
+//    }
 
     override fun onBind(intent: Intent): IBinder? {
         return null
@@ -200,8 +195,8 @@ class LocationTrack(private val mContext: Context) : Service(), LocationListener
 
     //Runs when location is changed
     override fun onLocationChanged(location: Location) {
-        loc!!.latitude = location.latitude
-        loc!!.longitude = location.longitude
+        loc?.latitude = location.latitude
+        loc?.longitude = location.longitude
     }
 
     override fun onStatusChanged(s: String, i: Int, bundle: Bundle) {}

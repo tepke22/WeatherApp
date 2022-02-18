@@ -11,10 +11,7 @@ import com.pma.weatherapp.base.functional.ICoroutineContextProvider
 import com.pma.weatherapp.base.functional.WeatherViewState
 import kotlinx.coroutines.launch
 
-class WeatherHourlyViewModel(
-    private val dataSource: IWeatherDataSource,
-    private val courutineContextProvider: ICoroutineContextProvider
-) : ViewModel() {
+class WeatherHourlyViewModel( private val dataSource: IWeatherDataSource, private val courutineContextProvider: ICoroutineContextProvider) : ViewModel() {
 
     private val _state = MutableLiveData<WeatherViewState>()
     val state: LiveData<WeatherViewState>

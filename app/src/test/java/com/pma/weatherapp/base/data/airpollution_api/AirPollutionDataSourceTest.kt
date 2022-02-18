@@ -9,6 +9,8 @@ import okhttp3.ResponseBody
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.anyDouble
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
@@ -36,7 +38,7 @@ class AirPollutionDataSourceTest {
         val expectedAirPollution = AirPollution(Coord(), listOf())
         val expectedResult = Either.Success(expectedAirPollution)
 
-        Mockito.`when`(apiService.getCurrentAirPollution(ArgumentMatchers.anyDouble(), ArgumentMatchers.anyDouble(), ArgumentMatchers.anyString())).thenReturn(getCurrentAirPollutionCall)
+        Mockito.`when`(apiService.getCurrentAirPollution(anyDouble(), anyDouble(), anyString())).thenReturn(getCurrentAirPollutionCall)
         Mockito.`when`(getCurrentAirPollutionCall.execute()).thenReturn(Response.success(expectedAirPollution))
 
         val result = dataSource.getCurrentAirPollution(0.0,0.0)
@@ -50,7 +52,7 @@ class AirPollutionDataSourceTest {
         val expectedResponseBody = ResponseBody.create(
             MediaType.parse("aplication "), " "
         )
-        Mockito.`when`(apiService.getCurrentAirPollution(ArgumentMatchers.anyDouble(), ArgumentMatchers.anyDouble(), ArgumentMatchers.anyString())).thenReturn(getCurrentAirPollutionCall)
+        Mockito.`when`(apiService.getCurrentAirPollution(anyDouble(), anyDouble(), anyString())).thenReturn(getCurrentAirPollutionCall)
 
         Mockito.`when`(getCurrentAirPollutionCall.execute())
             .thenReturn(Response.error(400, expectedResponseBody))

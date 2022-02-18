@@ -1,6 +1,5 @@
-package com.appcrafters.brewery.base.functional
+package com.pma.weatherapp.base.functional
 
-import com.pma.weatherapp.base.functional.ICoroutineContextProvider
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 

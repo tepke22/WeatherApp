@@ -18,8 +18,8 @@ class WeatherDataSource(private val apiService: WeatherApiService): IWeatherData
 
     companion object {
         private const val appid = "abbe04091b4ea9d5b1ca929c5cfc9258"
-        private const val slat = 55.757512
-        private const val slon = 37.564483
+//        private const val slat = 55.757512
+//        private const val slon = 37.564483
     }
 
     override suspend fun getCurrentWeather(
@@ -46,9 +46,8 @@ class WeatherDataSource(private val apiService: WeatherApiService): IWeatherData
         return handleCall(apiService.getHourlyWeather(lat, lon, appid, units))
     }
 
-    suspend fun <T> handleCall(call: Call<T>): Either<T> {
-
-        return withContext(Dispatchers.IO){
+    private suspend fun <T> handleCall(call: Call<T>): Either<T> {
+        return withContext(Dispatchers.IO) {
             val response = call.execute()
 
             if (response.isSuccessful) {
@@ -57,6 +56,5 @@ class WeatherDataSource(private val apiService: WeatherApiService): IWeatherData
                 Either.Error(Exception(response.message()))
             }
         }
-
     }
 }

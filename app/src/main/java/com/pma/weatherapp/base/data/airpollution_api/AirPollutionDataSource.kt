@@ -2,6 +2,8 @@ package com.pma.weatherapp.base.data.airpollution_api
 
 import com.pma.weatherapp.base.functional.Either
 import com.pma.weatherapp.base.model.air_pollution.AirPollution
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.awaitResponse
 
@@ -9,6 +11,7 @@ interface IAirPollutionDataSource{
 
     suspend fun getCurrentAirPollution(lat:Double, lon:Double): Either<AirPollution>
 }
+
 class AirPollutionDataSource(private val apiService: AirPollutionApiService) : IAirPollutionDataSource{
 
     companion object {
@@ -18,16 +21,18 @@ class AirPollutionDataSource(private val apiService: AirPollutionApiService) : I
     }
 
     override suspend fun getCurrentAirPollution(lat: Double, lon: Double): Either<AirPollution> {
-        return handleCall(apiService.getCurrentAirPollution(slat, slon, appid))
+        return handleCall(apiService.getCurrentAirPollution(lat, lon, appid))
     }
 
-    suspend fun <T> handleCall(call: Call<T>): Either<T> {
-        val response = call.awaitResponse()
+    private suspend fun <T> handleCall(call: Call<T>): Either<T> {
+        return withContext(Dispatchers.IO) {
+            val response = call.execute()
 
-        return if (response.isSuccessful) {
-            Either.Success(response.body()!!)
-        } else {
-            Either.Error(Exception(response.message()))
+            if (response.isSuccessful) {
+                Either.Success(response.body()!!)
+            } else {
+                Either.Error(Exception(response.message()))
+            }
         }
     }
 }

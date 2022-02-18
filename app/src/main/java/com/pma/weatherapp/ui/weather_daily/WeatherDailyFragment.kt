@@ -8,16 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.appcrafters.brewery.base.functional.CoroutineContextProvider
 import com.pma.weatherapp.R
 import com.pma.weatherapp.base.data.ApiServiceProvider
 import com.pma.weatherapp.base.data.weather_api.WeatherDataSource
+import com.pma.weatherapp.base.functional.CoroutineContextProvider
 import com.pma.weatherapp.base.functional.ViewModelFactoryUtil
 import com.pma.weatherapp.base.functional.WeatherViewState
 import com.pma.weatherapp.base.model.weather.Daily
 import kotlinx.android.synthetic.main.fragment_weather_daily.*
+
 
 class WeatherDailyFragment : Fragment() {
 
@@ -26,10 +26,11 @@ class WeatherDailyFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this, ViewModelFactoryUtil.viewModelFactory {
-            WeatherDailyViewModel(WeatherDataSource(ApiServiceProvider.weatherApiService),
-                CoroutineContextProvider())
-        }).get(WeatherDailyViewModel::class.java)
+        viewModel = ViewModelProvider(this, ViewModelFactoryUtil.viewModelFactory {WeatherDailyViewModel(
+            WeatherDataSource(ApiServiceProvider.weatherApiService),
+                CoroutineContextProvider()
+            )
+        })[WeatherDailyViewModel::class.java]
 
         sharedPreferences = this.requireActivity().getPreferences(Context.MODE_PRIVATE)
     }
@@ -44,7 +45,7 @@ class WeatherDailyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.state.observe(viewLifecycleOwner, Observer { state ->
+        viewModel.state.observe(viewLifecycleOwner) { state ->
 
             // breweryDetailsProgressBar.isVisible = state is BreweryDetailsViewState.Processing
 
@@ -52,7 +53,7 @@ class WeatherDailyFragment : Fragment() {
                 is WeatherViewState.DataReceived -> setUpView(state.weatherInfo.daily)
                 is WeatherViewState.ErrorReceived -> showError(state.message)
             }
-        })
+        }
         viewModel.getDailyWeather(
             sharedPreferences.getFloat("lat", 43.899998F).toDouble(),
             sharedPreferences.getFloat("lon", 20.390945F).toDouble()

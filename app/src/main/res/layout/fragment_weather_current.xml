@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/gradient"
         android:paddingBottom="20dp">
 
@@ -30,28 +29,33 @@
                 android:layout_height="match_parent"
                 android:padding="10dp">
 
-                <com.google.android.material.button.MaterialButton
+                <ImageButton
                     android:id="@+id/buttonSearch"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@drawable/button_gradient"
                     app:backgroundTint="@null"
+                    android:src="@drawable/ic_magnify"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
                     app:cornerRadius="50dp"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="Search button" />
 
-                <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/searchText"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="20dp"
-                    android:background="@color/white"
-                    android:padding="3dp"
-                    android:textSize="24sp"
-                    app:layout_constraintBottom_toBottomOf="@id/buttonSearch"
+                    android:layout_height="wrap_content"
                     app:layout_constraintLeft_toRightOf="@id/buttonSearch"
-                    app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/buttonSearch"
-                    tools:text="Cacak" />
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:hint="City search"
+                    android:textSize="22sp"
+                    android:layout_marginHorizontal="10dp"
+                    android:maxLines="1"
+                    android:inputType="text" />
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -75,7 +79,7 @@
                     android:id="@+id/textCity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
+                    android:layout_marginStart="12dp"
                     android:textSize="32sp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -154,7 +158,8 @@
                     android:scaleType="centerCrop"
                     app:layout_constraintLeft_toRightOf="@id/centerGuidelineDegree"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/content_description_weather_icon" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -179,7 +184,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_begin="191dp" />
+                    app:layout_constraintGuide_percent="0.5" />
 
                 <TextView
                     android:id="@+id/textMin"
@@ -207,8 +212,8 @@
 
                 <TextView
                     android:id="@+id/humidity"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="179dp"
+                    android:layout_height="41dp"
                     android:padding="4dp"
                     android:textAlignment="center"
                     android:textSize="18sp"
