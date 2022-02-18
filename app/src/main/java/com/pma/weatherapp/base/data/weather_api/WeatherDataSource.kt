@@ -46,9 +46,8 @@ class WeatherDataSource(private val apiService: WeatherApiService): IWeatherData
         return handleCall(apiService.getHourlyWeather(lat, lon, appid, units))
     }
 
-    suspend fun <T> handleCall(call: Call<T>): Either<T> {
-
-        return withContext(Dispatchers.IO){
+    private suspend fun <T> handleCall(call: Call<T>): Either<T> {
+        return withContext(Dispatchers.IO) {
             val response = call.execute()
 
             if (response.isSuccessful) {
@@ -57,6 +56,5 @@ class WeatherDataSource(private val apiService: WeatherApiService): IWeatherData
                 Either.Error(Exception(response.message()))
             }
         }
-
     }
 }

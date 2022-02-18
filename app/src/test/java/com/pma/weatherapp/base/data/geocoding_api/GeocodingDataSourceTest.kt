@@ -10,6 +10,8 @@ import okhttp3.ResponseBody
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.anyInt
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations.openMocks
@@ -37,7 +39,7 @@ class GeocodingDataSourceTest {
         val expectedCityNameByCordinates = Geocoding()
         val expectedResult = Either.Success(expectedCityNameByCordinates)
 
-        `when`(apiService.getCoordinatesByCityName(ArgumentMatchers.anyString(), ArgumentMatchers.anyString(), ArgumentMatchers.anyInt())).thenReturn(getCityNameByCordinatesCall)
+        `when`(apiService.getCoordinatesByCityName(anyString(), anyString(), anyInt())).thenReturn(getCityNameByCordinatesCall)
         `when`(getCityNameByCordinatesCall.execute()).thenReturn(Response.success(expectedCityNameByCordinates))
 
         val result = dataSource.getCoordinatesByCityName("Arilje", 0)
@@ -52,7 +54,7 @@ class GeocodingDataSourceTest {
         )
 
 
-        `when`(apiService.getCoordinatesByCityName(ArgumentMatchers.anyString(), ArgumentMatchers.anyString(), ArgumentMatchers.anyInt())).thenReturn(getCityNameByCordinatesCall)
+        `when`(apiService.getCoordinatesByCityName(anyString(), anyString(), anyInt())).thenReturn(getCityNameByCordinatesCall)
         `when`(getCityNameByCordinatesCall.execute()).thenReturn(Response.error(400, expectedResponseBody))
 
         val result = dataSource.getCoordinatesByCityName("Arilje",0)

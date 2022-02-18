@@ -21,6 +21,7 @@ import com.pma.weatherapp.base.data.ApiServiceProvider
 import com.pma.weatherapp.base.data.airpollution_api.AirPollutionDataSource
 import com.pma.weatherapp.base.data.geocoding_api.GeocodingDataSource
 import com.pma.weatherapp.base.data.weather_api.WeatherDataSource
+import com.pma.weatherapp.base.functional.CoroutineContextProvider
 import com.pma.weatherapp.base.functional.Either
 import com.pma.weatherapp.base.functional.ViewModelFactoryUtil
 import com.pma.weatherapp.base.functional.WeatherViewState
@@ -48,7 +49,10 @@ class WeatherCurrentFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, ViewModelFactoryUtil.viewModelFactory {
-            WeatherCurrentViewModel(WeatherDataSource(ApiServiceProvider.weatherApiService))
+            WeatherCurrentViewModel(
+                WeatherDataSource(ApiServiceProvider.weatherApiService),
+                CoroutineContextProvider()
+            )
         })[WeatherCurrentViewModel::class.java]
 
         sharedPreferences = this.requireActivity().getPreferences(MODE_PRIVATE)
@@ -71,7 +75,6 @@ class WeatherCurrentFragment : Fragment() {
         val geocodingApi =
             GeocodingDataSource(ApiServiceProvider.geocodingApiService)
 
-
         buttonSearch.setOnClickListener(View.OnClickListener { v ->
             var searchTerm = searchText.text.toString()
             searchTerm = searchTerm.trim()
@@ -81,7 +84,7 @@ class WeatherCurrentFragment : Fragment() {
             lifecycleScope.launch(Dispatchers.Default) {
                 var geocoding: Geocoding? = null
                 when (val result =
-                    geocodingApi.getCoordinatesByCityName(searchTerm)) {
+                    geocodingApi.getCoordinatesByCityName(searchTerm, 5)) {
                     is Either.Success -> geocoding = result.data
                     is Either.Error -> showError(result.exception.toString())
                 }
@@ -102,7 +105,7 @@ class WeatherCurrentFragment : Fragment() {
 
         viewModel.state.observe(viewLifecycleOwner) { state ->
 
-            // breweryDetailsProgressBar.isVisible = state is BreweryDetailsViewState.Processing
+            //breweryDetailsProgressBar.isVisible = state is BreweryDetailsViewState.Processing
 
             when (state) {
                 is WeatherViewState.DataReceived -> state.weatherInfo.daily?.get(0)
@@ -137,7 +140,7 @@ class WeatherCurrentFragment : Fragment() {
         lifecycleScope.launch {
             var geocoding: Geocoding? = null
             when (val result =
-                geocodingApi.getCityNameByCordinates(currentCoords.lat, currentCoords.lon)) {
+                geocodingApi.getCityNameByCordinates(currentCoords.lat, currentCoords.lon, 5)) {
                 is Either.Success -> geocoding = result.data
                 is Either.Error -> showError(result.exception.toString())
             }
@@ -169,6 +172,7 @@ class WeatherCurrentFragment : Fragment() {
             }
             airPollutionValue.text = airPollution.toString()
         }
+
         if ((alert?.get(0)?.event?.trim()?.length ?: 0 == 0) && (alert?.get(0)?.description?.trim()?.length ?: 0 == 0)) {
             alerts.text = "There are no country alerts currently."
         } else {
