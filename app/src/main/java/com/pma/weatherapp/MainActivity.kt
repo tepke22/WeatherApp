@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
             editor.putFloat("lon", LocationTrack(this).getLongitude().toFloat())
             editor.commit()
         }
-        Log.d("TAG LAT", sharedPreferences.getFloat("lat", (-5000.0).toFloat()).toString())
-        Log.d("TAG LON", sharedPreferences.getFloat("lon", (-5000.0).toFloat()).toString())
+//        Log.d("TAG LAT", sharedPreferences.getFloat("lat", (-5000.0).toFloat()).toString())
+//        Log.d("TAG LON", sharedPreferences.getFloat("lon", (-5000.0).toFloat()).toString())
     }
 }

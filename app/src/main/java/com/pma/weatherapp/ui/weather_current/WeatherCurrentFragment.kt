@@ -109,8 +109,7 @@ class WeatherCurrentFragment : Fragment() {
 
         })
 
-        viewModel.state.observe(viewLifecycleOwner)
-        { state ->
+        viewModel.state.observe(viewLifecycleOwner) { state ->
 
             when (state) {
                 is WeatherViewState.DataReceived -> state.weatherInfo.daily?.get(0)
@@ -128,7 +127,6 @@ class WeatherCurrentFragment : Fragment() {
             sharedPreferences.getFloat("lat", 43.899998F).toDouble(),
             sharedPreferences.getFloat("lon", 20.390945F).toDouble()
         )
-
     }
 
     private fun showError(message: String) {
@@ -140,8 +138,7 @@ class WeatherCurrentFragment : Fragment() {
 //        Log.d("TAGGG LAT", currentCoords.lat.toString())
 //        Log.d("TAGGG LON", currentCoords.lon.toString())
 
-        val geocodingApi =
-            GeocodingDataSource(ApiServiceProvider.geocodingApiService)
+        val geocodingApi = GeocodingDataSource(ApiServiceProvider.geocodingApiService)
         lifecycleScope.launch {
             var geocoding: Geocoding? = null
             when (val result =
@@ -167,15 +164,16 @@ class WeatherCurrentFragment : Fragment() {
         wind.text = getString(R.string.wind_value, current?.wind_speed)
         weatherDescription.text = current?.weather?.get(0)?.description?.capitalize(Locale.ROOT)
 
-        val airPollutionApi =
-            AirPollutionDataSource(ApiServiceProvider.airPollutionApiService)
+        val airPollutionApi = AirPollutionDataSource(ApiServiceProvider.airPollutionApiService)
         lifecycleScope.launch {
             var airPollution: AirPollution? = null
-            when (val result = airPollutionApi.getCurrentAirPollution(0.0, 0.0)) {
+            when (val result = airPollutionApi.getCurrentAirPollution(currentCoords.lat, currentCoords.lon)) {
                 is Either.Success -> airPollution = result.data
                 is Either.Error -> showError(result.exception.toString())
             }
-            airPollutionValue.text = airPollution.toString()
+            if (airPollution != null) {
+                airPollutionValue.text = airPollution.toString()
+            }
         }
 
         if (alert != null) {
@@ -207,7 +205,6 @@ class WeatherCurrentFragment : Fragment() {
             getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
-
 }
 
 
