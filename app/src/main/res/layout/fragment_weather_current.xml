@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gradient"
+        android:paddingBottom="20dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            app:cardBackgroundColor="@color/card_background"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp">
+
+                <ImageButton
+                    android:id="@+id/buttonSearch"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_gradient"
+                    app:backgroundTint="@null"
+                    android:src="@drawable/ic_magnify"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    app:cornerRadius="50dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="Search button" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/searchText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toRightOf="@id/buttonSearch"
+                    app:layout_constraintTop_toTopOf="@id/buttonSearch"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:hint="City search"
+                    android:textSize="22sp"
+                    android:layout_marginHorizontal="10dp"
+                    android:maxLines="1"
+                    android:inputType="text" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            app:cardBackgroundColor="@color/card_background"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintLeft_toLeftOf="@id/cardSearch"
+            app:layout_constraintTop_toBottomOf="@id/cardSearch">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/textCity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:textSize="32sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Cacak, Serbia" />
+
+                <TextView
+                    android:id="@+id/textDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    app:layout_constraintLeft_toLeftOf="@id/textCity"
+                    app:layout_constraintTop_toBottomOf="@id/textCity"
+                    tools:text="Monday, 7.2.2022." />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardDegree"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            app:cardBackgroundColor="@color/card_background"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintLeft_toLeftOf="@id/cardTitle"
+            app:layout_constraintTop_toBottomOf="@id/cardTitle">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="20dp">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/centerGuidelineDegree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
+
+                <TextView
+                    android:id="@+id/textDegree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="50sp"
+                    app:layout_constraintBottom_toBottomOf="@id/weatherImage"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/centerGuidelineDegree"
+                    app:layout_constraintTop_toTopOf="@id/weatherImage"
+                    tools:text="20°C" />
+
+                <TextView
+                    android:id="@+id/textReelFeel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@id/weatherDescription"
+                    app:layout_constraintLeft_toLeftOf="@id/textDegree"
+                    app:layout_constraintTop_toTopOf="@id/weatherDescription"
+                    tools:text="Reel feel: 14%" />
+
+                <TextView
+                    android:id="@+id/weatherDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/centerGuidelineDegree"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/weatherImage"
+                    tools:text="Description" />
+
+                <ImageView
+                    android:id="@+id/weatherImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintLeft_toRightOf="@id/centerGuidelineDegree"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/content_description_weather_icon" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardMinMax"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            app:cardBackgroundColor="@color/card_background"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintLeft_toLeftOf="@id/cardDegree"
+            app:layout_constraintTop_toBottomOf="@id/cardDegree">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="12dp">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/centerGuidelineMinMax"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
+
+                <TextView
+                    android:id="@+id/textMin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/centerGuidelineMinMax"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Min: 11°C" />
+
+                <TextView
+                    android:id="@+id/textMax"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="@id/textMin"
+                    app:layout_constraintRight_toLeftOf="@id/centerGuidelineMinMax"
+                    app:layout_constraintTop_toBottomOf="@id/textMin"
+                    tools:text="Max: 17°C" />
+
+                <TextView
+                    android:id="@+id/humidity"
+                    android:layout_width="179dp"
+                    android:layout_height="41dp"
+                    android:padding="4dp"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    app:layout_constraintLeft_toLeftOf="@id/centerGuidelineMinMax"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/textMin"
+                    tools:text="Humidity: 30%" />
+
+                <TextView
+                    android:id="@+id/wind"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:textAlignment="center"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@id/textMax"
+                    app:layout_constraintLeft_toLeftOf="@id/centerGuidelineMinMax"
+                    app:layout_constraintRight_toRightOf="parent"
+                    tools:text="Wind: 22m/s" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardPollution"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            app:cardBackgroundColor="@color/card_background"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintLeft_toLeftOf="@id/cardMinMax"
+            app:layout_constraintTop_toBottomOf="@id/cardMinMax">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+
+                <TextView
+                    android:id="@+id/airPollutionCaption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text="@string/air_pollution_caption"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Air Pollution" />
+
+                <TextView
+                    android:id="@+id/airPollutionValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="16sp"
+                    android:layout_marginTop="4dp"
+                    app:layout_constraintLeft_toLeftOf="@id/airPollutionCaption"
+                    app:layout_constraintRight_toRightOf="@id/airPollutionCaption"
+                    app:layout_constraintTop_toBottomOf="@id/airPollutionCaption"
+                    tools:text="Air | Pollution | Value" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            app:cardBackgroundColor="@color/card_background"
+            app:cardCornerRadius="20dp"
+            app:layout_constraintLeft_toLeftOf="@id/cardPollution"
+            app:layout_constraintTop_toBottomOf="@id/cardPollution">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+
+                <TextView
+                    android:id="@+id/alerts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Upozorenje na vremenske nepogode u drzavi" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

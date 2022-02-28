@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Weather App</string>
+    <string name="title_home">Home</string>
+    <string name="title_daily">7 Days</string>
+    <string name="title_hourly">48 Hours</string>
+    <string name="air_pollution_caption">Air Pollution</string>
+    <string name="content_description_weather_icon">Current weather icon</string>
+    <string name="content_description_weather_wind_icon">Wind icon</string>
+    <string name="content_description_weather_humidity_icon">Humidity icon</string>
+
+    <string name="max_temp">"Max: %1$.0f °C"</string>
+    <string name="min_temp">"Min: %1$.0f °C"</string>
+    <string name="humidity_value">"Humidity: %1$d%%"</string>
+    <string name="wind_value">"Wind: %1$.2fm/s"</string>
+    <string name="real_feel">"Reel feel: %1$.0f °C"</string>
+    <string name="curr_temp">"%1$.0f °C"</string>
+    <string name="no_city_err">No city found!</string>
+    <string name="no_alerts_err">There are no country alerts currently.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+</resources>
